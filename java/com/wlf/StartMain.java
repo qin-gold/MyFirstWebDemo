@@ -12,29 +12,43 @@ import java.util.Properties;
  * @updateDate 2021/4/28 0:10
  */
 public class StartMain {
-    private static String PATH=null;
-    private static String PORT="80";
-    private static String VIEWPATH=null;
+    private static String ContextPath ="/";
+    private static String Port ="80";
+    private static String ViewPath ="/";
     static{
         Properties pro = new Properties();
         try {
             pro.load(StartMain.class.getClassLoader().getResourceAsStream("jettyConfig.properties"));
-            PATH = pro.getProperty("path");
-            PORT = pro.getProperty("port");
-            VIEWPATH = pro.getProperty("viewPath");
+            ContextPath = pro.getProperty("ContextPath");
+            Port = pro.getProperty("Port");
+            ViewPath = pro.getProperty("ViewPath");
         } catch (IOException e) {
             e.printStackTrace();
         }
 
     }
     public static void main(String[] args) throws Exception {
-        Server server =new Server(Integer.valueOf(PORT));
+        Server server =new Server(Integer.parseInt(Port));
+//        ServerConnector connector = new ServerConnector(server);
+//        connector.setPort(Integer.parseInt(PORT));
+//        server.setConnectors(new Connector[] {connector});
+//        ServletContextHandler contextHandler = new ServletContextHandler();
+//        contextHandler.setContextPath(VIEWPATH);
+//        contextHandler.setResourceBase(PATH);
+//        //创建一个handler
+//        ServletHandler handler = new ServletHandler();
+//        server.setHandler(handler);
+
+
         WebAppContext appContext =new WebAppContext();
         appContext.setThrowUnavailableOnStartupException(true);
-        appContext.setResourceBase(PATH);
-        appContext.setContextPath(VIEWPATH);
+        appContext.setContextPath(ContextPath);
+        appContext.setResourceBase(ViewPath);
         server.setHandler(appContext);
+
+        System.out.println("Starting web server on port: " + Port);
         server.start();
+        System.out.println("Starting Complete. Welcome To The Bast World");
         server.join();
     }
 }

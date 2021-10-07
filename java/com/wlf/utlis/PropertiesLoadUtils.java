@@ -2,6 +2,7 @@ package com.wlf.utlis;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Objects;
 import java.util.Properties;
 
 /**
@@ -38,7 +39,7 @@ public class PropertiesLoadUtils {
         Properties properties = new Properties();
         String property = null;
         try {
-            properties.load(new InputStreamReader(PropertiesLoadUtils.class.getClassLoader().getResourceAsStream("msgConfig.properties")));
+            properties.load(new InputStreamReader(Objects.requireNonNull(PropertiesLoadUtils.class.getClassLoader().getResourceAsStream("msgConfig.properties"))));
             property = properties.getProperty(key);
         } catch (IOException e) {
             e.printStackTrace();

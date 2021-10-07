@@ -20,15 +20,15 @@ public class DbInit {
     public static void createTable(Object obj){
         Connection conn = JDBCUtils.openConnection();
         StringBuilder drop = new StringBuilder();
+        Class<?> aClass = obj.getClass();
         StringBuilder create = new StringBuilder();
-        boolean present = obj.getClass().isAnnotationPresent(Table.class);
+        boolean present = aClass.isAnnotationPresent(Table.class);
         if (!present){
             return;
         }
-        String tableName = obj.getClass().getAnnotation(Table.class).value();
+        String tableName = aClass.getAnnotation(Table.class).value();
         drop.append(" drop table if exists ").append(tableName);
         create.append(" create table ").append(tableName).append(" ( ");
-        Class<?> aClass = obj.getClass();
         Field[] fields = aClass.getDeclaredFields();
         for (Field field : fields) {
             TablePk pk = field.getAnnotation(TablePk.class);
@@ -36,7 +36,7 @@ public class DbInit {
             if (column!=null){
                 create.append(column.value()).append(" ")
                         .append(column.type().getValue())
-                        .append((column.type()== DbType.Varchar||column.type()==DbType.Char||column.type()==DbType.Text)?" ("+column.length()+") ":" ")
+                        .append((column.type()== DbType.Varchar||column.type()==DbType.Char)?" ("+column.length()+") ":" ")
                         .append(column.notNull()?" not null ":"");
                 if (pk!=null){
                     if (pk.isPk()){
