@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<link href="static/plugins/bootstrap-3.4.1-dist/css/bootstrap.css" type="text/css">
+<body>
+<h1>欢迎使用Jetty</h1>
+<form action="/login" method="post">
+  账户名<input type="text" name="Account.username">
+  密码<input type="text" name="Account.password">
+  <input type="submit" value="提交">
+</form>
+<h1 th:value="${thymeleaf}"></h1>
+<script src="static/js/jquery-3.6.0.js" type="javascript"></script>
+<script src="static/plugins/bootstrap-3.4.1-dist/js/bootstrap.js" type="javascript"></script>
+</body>
+</html>
+
