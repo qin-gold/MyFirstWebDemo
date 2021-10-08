@@ -158,15 +158,7 @@ public class JDBCUtils {
             ResultSetMetaData rsmd = rs.getMetaData();
             int columnCount = rsmd.getColumnCount();
             Map<String,Object> map = null;
-            while(rs.next()){
-                map = new HashMap<String, Object>();
-                for (int i = 0; i < columnCount; i++) {
-                    String colunmName = rsmd.getColumnLabel(i+1);
-                    Object columnValue = rs.getObject(colunmName);
-                    map.put(colunmName, columnValue);
-                }
-                list.add(map);
-            }
+            hasNext(rs, list, rsmd, columnCount);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -174,6 +166,19 @@ public class JDBCUtils {
             releaseResources(rs);
         }
         return list;
+    }
+
+    private static void hasNext(ResultSet rs, List<Map<String, Object>> list, ResultSetMetaData rsmd, int columnCount) throws SQLException {
+        Map<String, Object> map;
+        while(rs.next()){
+            map = new HashMap<String, Object>();
+            for (int i = 0; i < columnCount; i++) {
+                String colunmName = rsmd.getColumnLabel(i+1);
+                Object columnValue = rs.getObject(colunmName);
+                map.put(colunmName, columnValue);
+            }
+            list.add(map);
+        }
     }
 
     //重载
@@ -190,15 +195,7 @@ public class JDBCUtils {
             ResultSetMetaData rsmd = rs.getMetaData();
             int columnCount = rsmd.getColumnCount();
             Map<String,Object> map = null;
-            while(rs.next()){
-                map = new HashMap<String, Object>();
-                for (int i = 0; i < columnCount; i++) {
-                    String colunmName = rsmd.getColumnLabel(i+1);
-                    Object columnValue = rs.getObject(colunmName);
-                    map.put(colunmName, columnValue);
-                }
-                list.add(map);
-            }
+            hasNext(rs, list, rsmd, columnCount);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {

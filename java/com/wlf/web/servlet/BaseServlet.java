@@ -1,5 +1,9 @@
 package com.wlf.web.servlet;
 
+import com.wlf.web.listener.ThymeleafListener;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.WebContext;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -13,6 +17,7 @@ import java.io.IOException;
  * @date 2021-04-28 15:11
  */
 public class BaseServlet extends HttpServlet {
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         this.doPost(req, resp);
@@ -20,9 +25,7 @@ public class BaseServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        //设置请求头响应头字符集
-        req.setCharacterEncoding("utf-8");
-        resp.setCharacterEncoding("utf-8");
+
     }
 
     private void postJson(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -30,8 +33,8 @@ public class BaseServlet extends HttpServlet {
     }
 
     private void post(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setCharacterEncoding("utf-8");
         resp.setContentType("text/html; charset=utf-8");
-        this.doPost(req,resp);
     }
 
     protected void returnJson(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -40,5 +43,10 @@ public class BaseServlet extends HttpServlet {
 
     protected void defaultReturn(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         this.post(req,resp);
+    }
+
+    protected void engineStart(HttpServletRequest req, HttpServletResponse resp,String path) throws ServletException, IOException{
+        TemplateEngine engine = ThymeleafListener.getTemplateEngine(req.getServletContext());
+        engine.process(path,new WebContext(req,resp,req.getServletContext()),resp.getWriter());
     }
 }

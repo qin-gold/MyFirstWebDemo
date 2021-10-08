@@ -34,16 +34,16 @@ public class Inject<T> {
     public static <T> T getBeanForce(HttpServletRequest request, Class<T> t){
         try{
             forBean(request, (Class<Object>) t);
-            set.stream().filter(item->parameterMap.containsKey(simpleName+'.'+item)).forEach(item->{
-                try {
-                    Field field = t.getDeclaredField(item);
-                    //暴力注入
-                    field.setAccessible(true);
-                    field.set(ts,parameterMap.get(simpleName+'.'+item)[0]);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            } );
+                set.stream().filter(item->parameterMap.containsKey(simpleName+'.'+item)).forEach(item->{
+                    try {
+                        Field field = t.getDeclaredField(item);
+                        //暴力注入
+                        field.setAccessible(true);
+                        field.set(ts,parameterMap.get(simpleName+'.'+item)[0]);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } );
             return (T) ts;
         }catch (Exception e){
             e.printStackTrace();
@@ -61,14 +61,14 @@ public class Inject<T> {
     public static <T> T getBean(HttpServletRequest request, Class<T> t){
         try{
            forBean(request, (Class<Object>) t);
-            set.stream().filter(item->parameterMap.containsKey(simpleName+'.'+item)).forEach(item->{
-                try {
-                    Method method = t.getMethod("set"+ DataKitUtils.firstCharToLowerCase(item),String.class);
-                    method.invoke(ts,parameterMap.get(simpleName+'.'+item)[0]);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            } );
+               set.stream().filter(item->parameterMap.containsKey(simpleName+'.'+item)).forEach(item->{
+                   try {
+                       Method method = t.getMethod("set"+ DataKitUtils.firstCharToLowerCase(item),String.class);
+                       method.invoke(ts,parameterMap.get(simpleName+'.'+item)[0]);
+                   } catch (Exception e) {
+                       e.printStackTrace();
+                   }
+               } );
             return (T) ts;
         }catch (Exception e){
             e.printStackTrace();
@@ -77,13 +77,6 @@ public class Inject<T> {
     }
 
     private static void forBean(HttpServletRequest request, Class<Object> t) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
-        if (request==null){
-            throw new RuntimeException("实例不存在");
-        }
-        setParameterMap(request.getParameterMap());
-        if (parameterMap.size()<=0){
-            throw new RuntimeException("实例不存在");
-        }
         set = new HashSet<>();
         Field[] fields = t.getDeclaredFields();
         simpleName = t.getSimpleName();
@@ -91,6 +84,7 @@ public class Inject<T> {
         for (Field field : fields) {
             set.add(field.getName());
         }
+        setParameterMap(request.getParameterMap());
     }
 
     private static void setParameterMap(Map<String, String[]> parameterMap) {
