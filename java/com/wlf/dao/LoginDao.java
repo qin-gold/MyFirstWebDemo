@@ -2,7 +2,7 @@ package com.wlf.dao;
 
 import com.wlf.domain.Account;
 import com.wlf.domain.LoginStatus;
-import com.wlf.utlis.Result;
+import com.wlf.domain.dto.Result;
 
 
 /**

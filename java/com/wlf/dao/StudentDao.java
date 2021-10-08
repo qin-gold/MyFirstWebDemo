@@ -1,7 +1,7 @@
 package com.wlf.dao;
 
 import com.wlf.domain.Student;
-import com.wlf.utlis.Result;
+import com.wlf.domain.dto.Result;
 
 import java.io.IOException;
 

@@ -1,5 +1,7 @@
 package com.wlf.domain;
 
+import lombok.Data;
+
 import java.sql.Timestamp;
 
 /**
@@ -8,6 +10,7 @@ import java.sql.Timestamp;
  * @version 1.0
  * @date 2021-04-27 15:57
  */
+@Data
 public class LoginStatus {
     private String id;
     private String accountName;
@@ -16,60 +19,4 @@ public class LoginStatus {
     private int status;
     private String loginResult;
     private String ip;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getAccountName() {
-        return accountName;
-    }
-
-    public void setAccountName(String accountName) {
-        this.accountName = accountName;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    public Timestamp getLoginTime() {
-        return loginTime;
-    }
-
-    public void setLoginTime(Timestamp loginTime) {
-        this.loginTime = loginTime;
-    }
-
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
-    }
-
-    public String getLoginResult() {
-        return loginResult;
-    }
-
-    public void setLoginResult(String loginResult) {
-        this.loginResult = loginResult;
-    }
-
-    public String getIp() {
-        return ip;
-    }
-
-    public void setIp(String ip) {
-        this.ip = ip;
-    }
 }

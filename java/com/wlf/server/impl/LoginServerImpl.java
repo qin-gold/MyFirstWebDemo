@@ -5,7 +5,7 @@ import com.wlf.dao.impl.LoginDaoImpl;
 import com.wlf.domain.Account;
 import com.wlf.server.LoginServer;
 import com.wlf.utlis.MD5Utils;
-import com.wlf.utlis.Result;
+import com.wlf.domain.dto.Result;
 
 /**
  * @author QinShijiao
@@ -13,12 +13,11 @@ import com.wlf.utlis.Result;
  * @date 2021-04-27 15:42
  */
 public class LoginServerImpl implements LoginServer {
-    private LoginDao loginDao =new LoginDaoImpl();
+    private final LoginDao loginDao =new LoginDaoImpl();
     @Override
     public Result login(Account account) {
         account.setPassword(MD5Utils.md5(account.getPassword()));
-        Result login = loginDao.login(account);
-        return login;
+        return loginDao.login(account);
     }
 
     @Override

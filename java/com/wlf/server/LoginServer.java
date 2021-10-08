@@ -1,7 +1,7 @@
 package com.wlf.server;
 
 import com.wlf.domain.Account;
-import com.wlf.utlis.Result;
+import com.wlf.domain.dto.Result;
 
 /**
  * 用户登录的操作接口

@@ -6,8 +6,8 @@ import com.wlf.domain.LoginStatus;
 import com.wlf.msgEnum.CodeEnum;
 import com.wlf.msgEnum.MsgCode;
 import com.wlf.utlis.JDBCUtils;
-import com.wlf.utlis.Result;
-import com.wlf.utlis.ReturnMsg;
+import com.wlf.domain.dto.Result;
+import com.wlf.domain.dto.ReturnMsg;
 
 import java.sql.Connection;
 import java.util.Date;
