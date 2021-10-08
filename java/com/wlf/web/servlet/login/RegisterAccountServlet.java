@@ -1,5 +1,8 @@
 package com.wlf.web.servlet.login;
 
+import com.wlf.annotation.Servlet;
+import com.wlf.web.servlet.BaseServlet;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -13,8 +16,9 @@ import java.io.IOException;
  * @version 1.0
  * @date 2021-04-29 9:19
  */
-@WebServlet(name = "register",urlPatterns = "/register")
-public class RegisterAccountServlet extends HttpServlet {
+//@WebServlet(name = "register",urlPatterns = "/register")
+@Servlet(mapping = "/register")
+public class RegisterAccountServlet extends BaseServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         System.out.println(123);

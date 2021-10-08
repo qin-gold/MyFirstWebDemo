@@ -1,9 +1,8 @@
-package com.wlf.web;
-
-import com.wlf.utlis.DataKitUtils;
+package com.wlf.utlis;
 
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
 
@@ -16,30 +15,25 @@ import java.util.*;
  * @author QinShijiao
  * @version 1.0
  * @date 2021-04-28 15:57
+ * @updateDate 2021-10-07
+ * 抽出公共代码 优化JDK9以后实例化过时问题
  */
 public class Inject<T> {
+    private static Map<String, String[]> parameterMap;
+    private static String simpleName;
+    private static Set<String> set;
+    private static Object ts;
+
     /** 暴力注入
      * @param request
      * @param t
      * @param <T>
      * @return
      */
+    @SuppressWarnings("unchecked")
     public static <T> T getBeanForce(HttpServletRequest request, Class<T> t){
         try{
-            if (request==null){
-                throw new RuntimeException("实例不存在");
-            }
-            Map<String, String[]> parameterMap = request.getParameterMap();
-            if (parameterMap.size()<=0){
-                throw new RuntimeException("实例不存在");
-            }
-            Set<String> set = new HashSet<>();
-            Field[] fields = t.getDeclaredFields();
-            String simpleName = t.getSimpleName();
-            T ts = t.newInstance();
-            for (int i =0 ; i<fields.length;i++){
-              set.add(fields[i].getName());
-            }
+            forBean(request, (Class<Object>) t);
             set.stream().filter(item->parameterMap.containsKey(simpleName+'.'+item)).forEach(item->{
                 try {
                     Field field = t.getDeclaredField(item);
@@ -50,7 +44,7 @@ public class Inject<T> {
                     e.printStackTrace();
                 }
             } );
-            return ts;
+            return (T) ts;
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -63,19 +57,10 @@ public class Inject<T> {
      * @param <T>
      * @return
      */
+    @SuppressWarnings("unchecked")
     public static <T> T getBean(HttpServletRequest request, Class<T> t){
         try{
-            Map<String, String[]> parameterMap = request.getParameterMap();
-            if (parameterMap.size()<=0){
-                throw new RuntimeException("实例不存在");
-            }
-            Set<String> set = new HashSet<>();
-            Field[] fields = t.getDeclaredFields();
-            String simpleName = t.getSimpleName();
-            T ts = t.newInstance();
-            for (int i =0 ; i<fields.length;i++){
-                set.add(fields[i].getName());
-            }
+           forBean(request, (Class<Object>) t);
             set.stream().filter(item->parameterMap.containsKey(simpleName+'.'+item)).forEach(item->{
                 try {
                     Method method = t.getMethod("set"+ DataKitUtils.firstCharToLowerCase(item),String.class);
@@ -84,11 +69,31 @@ public class Inject<T> {
                     e.printStackTrace();
                 }
             } );
-            return ts;
+            return (T) ts;
         }catch (Exception e){
             e.printStackTrace();
         }
         return null;
     }
 
+    private static void forBean(HttpServletRequest request, Class<Object> t) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+        if (request==null){
+            throw new RuntimeException("实例不存在");
+        }
+        setParameterMap(request.getParameterMap());
+        if (parameterMap.size()<=0){
+            throw new RuntimeException("实例不存在");
+        }
+        set = new HashSet<>();
+        Field[] fields = t.getDeclaredFields();
+        simpleName = t.getSimpleName();
+        ts = t.getDeclaredConstructor().newInstance();
+        for (Field field : fields) {
+            set.add(field.getName());
+        }
+    }
+
+    private static void setParameterMap(Map<String, String[]> parameterMap) {
+        Inject.parameterMap = parameterMap;
+    }
 }
