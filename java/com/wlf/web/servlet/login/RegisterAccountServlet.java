@@ -16,7 +16,6 @@ import java.io.IOException;
  * @version 1.0
  * @date 2021-04-29 9:19
  */
-//@WebServlet(name = "register",urlPatterns = "/register")
 @Servlet(mapping = "/register")
 public class RegisterAccountServlet extends BaseServlet {
     @Override

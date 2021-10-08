@@ -2,11 +2,10 @@ import com.wlf.dao.LoginDao;
 import com.wlf.dao.impl.LoginDaoImpl;
 import com.wlf.domain.Account;
 import com.wlf.utlis.MD5Utils;
-import com.wlf.utlis.Result;
+import com.wlf.domain.dto.Result;
 import org.junit.Test;
 
 import java.sql.Timestamp;
-import java.util.Date;
 import java.util.UUID;
 
 /**

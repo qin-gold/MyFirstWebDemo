@@ -1,12 +1,15 @@
 package com.wlf;
 
 import com.wlf.utlis.Scanner;
+import com.wlf.web.listener.BaseListener;
+import com.wlf.web.listener.ThymeleafListener;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.webapp.WebAppContext;
 
 import javax.servlet.DispatcherType;
 import javax.servlet.Filter;
 import javax.servlet.Servlet;
+import javax.servlet.ServletContextListener;
 import java.io.IOException;
 import java.util.*;
 
@@ -37,13 +40,13 @@ public class StartMain {
     }
     @SuppressWarnings("unchecked")
     public static void main(String[] args) throws Exception {
-        Server server =new Server(Integer.parseInt(Port));
+        Server server = new Server(Integer.parseInt(Port));
         WebAppContext appContext =new WebAppContext();
         appContext.setThrowUnavailableOnStartupException(true);
         appContext.setContextPath(ContextPath);
         appContext.setResourceBase(ViewPath);
         /***********************************/
-        System.out.println("加载Mapping开始");
+        System.out.println("加载资源开始");
         map = Scanner.init(ScannerPackage, com.wlf.annotation.Filter.class);
         set = map.keySet();
         for (Class<?> aClass : set) {
@@ -56,11 +59,21 @@ public class StartMain {
         map = Scanner.init(ScannerPackage, com.wlf.annotation.Servlet.class);
         set = map.keySet();
         for (Class<?> aClass : set) {
-            String mapping = map.get(aClass);
-            System.out.println("加载Servlet------  "+aClass.toString()+" Mapping--------  "+mapping);
-            appContext.addServlet((Class<? extends Servlet>) aClass,mapping);
+            String url_patton = map.get(aClass);
+            System.out.println("加载Servlet------  "+aClass.toString()+" Url_patton--------  "+url_patton);
+            appContext.addServlet((Class<? extends Servlet>) aClass,url_patton);
         }
-        System.out.println("加载Mapping结束");
+        map.clear();
+        set.clear();
+        map = Scanner.init(ScannerPackage, com.wlf.annotation.Listener.class);
+        set = map.keySet();
+        for (Class<?> aClass : set) {
+            System.out.println("加载Listener------  "+aClass.toString());
+            ServletContextListener servletContextListener = (ServletContextListener)aClass.getDeclaredConstructor().newInstance();
+            appContext.addEventListener(servletContextListener);
+        }
+        appContext.addEventListener(new ThymeleafListener());
+        System.out.println("加载资源结束");
         /***********************************/
         server.setHandler(appContext);
 

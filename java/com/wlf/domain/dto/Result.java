@@ -1,4 +1,4 @@
-package com.wlf.utlis;
+package com.wlf.domain.dto;
 
 /**
  * 这是一个数据封转类

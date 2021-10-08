@@ -1,4 +1,6 @@
-package com.wlf.utlis;
+package com.wlf.domain.dto;
+
+import com.wlf.utlis.PropertiesLoadUtils;
 
 /**
  * 返回消息公共模板

@@ -1,6 +1,6 @@
 import com.wlf.dao.StudentDao;
 import com.wlf.dao.impl.StudentDaoImpl;
-import com.wlf.utlis.Result;
+import com.wlf.domain.dto.Result;
 
 /**
  * @author Qin
@@ -15,7 +15,7 @@ public class StudentTest {
 //        System.out.println(byId.getMsg());
 //        System.out.println(byId.getData());
         System.out.println("---------");
-        Result all = studentDao.findAll(0, 5, "大厨");
+        Result all = studentDao.findAll(0, 5, "");
         System.out.println(all.getData());
     }
 }
