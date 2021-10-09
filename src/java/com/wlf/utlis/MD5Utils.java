@@ -1,6 +1,5 @@
 package com.wlf.utlis;
 
-import sun.security.provider.MD5;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
