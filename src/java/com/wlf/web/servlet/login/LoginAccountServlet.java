@@ -2,7 +2,7 @@ package com.wlf.web.servlet.login;
 
 import com.alibaba.fastjson.JSON;
 import com.wlf.annotation.Servlet;
-import com.wlf.domain.Account;
+import com.wlf.domain.base.Account;
 import com.wlf.server.LoginServer;
 import com.wlf.server.impl.LoginServerImpl;
 import com.wlf.domain.dto.Result;

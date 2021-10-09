@@ -18,7 +18,6 @@ public class ReturnMsg {
 
     public ReturnMsg(String code) {
         this.code = code;
-        String msg =code==null?"": PropertiesLoadUtils.load(code);
-        this.msg = msg;
+        this.msg = code==null?"": PropertiesLoadUtils.loadMsg(code);
     }
 }

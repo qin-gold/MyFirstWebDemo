@@ -18,11 +18,11 @@ public class PropertiesLoadUtils {
         * @author Qin ShiJiao
         * @createTime 2021/4/27 0:26
     */
-    public static String load(String fileName,String key){
+    public static String load(String fileName, String key){
         Properties properties = new Properties();
         String property = null;
         try {
-             properties.load(PropertiesLoadUtils.class.getResourceAsStream(fileName));
+             properties.load(new InputStreamReader(Objects.requireNonNull(PropertiesLoadUtils.class.getClassLoader().getResourceAsStream(fileName))));
              property = properties.getProperty(key);
         } catch (IOException e) {
             e.printStackTrace();
@@ -35,7 +35,7 @@ public class PropertiesLoadUtils {
         * @author Qin ShiJiao
         * @createTime 2021/4/27 0:27
     */
-    public static String load(String key){
+    public static String loadMsg(String key){
         Properties properties = new Properties();
         String property = null;
         try {

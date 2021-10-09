@@ -20,4 +20,5 @@ public @interface Column {
     DbType type();
     int length() default 32;
     boolean notNull() default false;
+    String remark() default "";
 }
