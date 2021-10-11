@@ -12,7 +12,7 @@ public enum CodeEnum {
     //错误状态
     FAULT("500","错误"),
     //异常状态
-    NOTFAND("404","异常");
+    NOTFOUND("404","异常");
 
     // 状态中文含义
     private final String statusZh;

@@ -20,7 +20,7 @@ public enum DbType {
      */
     Int("int"),
     /**
-     * DateTime 类型
+     * DateTime类型
      */
     DateTime("datetime"),
     /**

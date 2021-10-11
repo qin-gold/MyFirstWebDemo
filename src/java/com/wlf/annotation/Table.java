@@ -7,6 +7,7 @@ import java.lang.annotation.Target;
 
 /**
  * 这个是一个TableName的注解
+ *
  * @author QinShijiao
  * @version 1.0
  * @createTime 2021/4/30 4:09

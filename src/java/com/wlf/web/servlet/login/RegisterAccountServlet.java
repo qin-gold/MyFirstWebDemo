@@ -12,6 +12,7 @@ import java.io.IOException;
 
 /**
  * 注册账号的功能
+ *
  * @author QinShijiao
  * @version 1.0
  * @date 2021-04-29 9:19

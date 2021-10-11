@@ -1,7 +1,7 @@
 package com.wlf.dao.impl;
 
 import com.wlf.dao.LoginDao;
-import com.wlf.domain.Account;
+import com.wlf.domain.base.Account;
 import com.wlf.domain.LoginStatus;
 import com.wlf.msgEnum.CodeEnum;
 import com.wlf.msgEnum.MsgCode;
@@ -16,6 +16,7 @@ import java.util.Map;
 
 /**
  * 登录操作类
+ *
  * @author Qin
  * @createDate 2021/4/26 23:03
  * @updateDate 2021/4/26 23:03
@@ -25,14 +26,14 @@ public class LoginDaoImpl implements LoginDao {
     private final Connection con = JDBCUtils.openConnection();
 
     @Override
-    public Result login(Account account){
+    public Result login(Account account) {
         Result result = new Result();
         String sql = "select id from account where username = ? and password = ?";
         List<Map<String, Object>> list = JDBCUtils.queryForList(con, sql, account.getUsername(), account.getPassword());
-        if (!list.isEmpty()){
+        if (!list.isEmpty()) {
             result.setCode(CodeEnum.SUCCESS.getStatusValue());
             result.setMsg(new ReturnMsg(MsgCode.MSG005).getMsg());
-        }else {
+        } else {
             result.setCode(CodeEnum.FAULT.getStatusValue());
             result.setMsg(new ReturnMsg(MsgCode.ERR009).getMsg());
         }
@@ -51,10 +52,10 @@ public class LoginDaoImpl implements LoginDao {
         Result result = new Result();
         String sql = "insert into account(id,username,password,userId,createTime,remark) values (?,?,?,?,?,?)";
         int i = JDBCUtils.update(con, sql, account.getId(), account.getUsername(), account.getPassword(), account.getUserId(), new Date(), account.getRemark());
-        if (i==1){
+        if (i == 1) {
             result.setCode(CodeEnum.SUCCESS.getStatusValue());
             result.setMsg(new ReturnMsg(MsgCode.MSG002).getMsg());
-        }else {
+        } else {
             result.setCode(CodeEnum.FAULT.getStatusValue());
             result.setMsg(new ReturnMsg(MsgCode.ERR007).getMsg());
         }
@@ -67,10 +68,10 @@ public class LoginDaoImpl implements LoginDao {
         String sql = "update account set password = ?,updateTime = ?,remark =? where id = ?";
         int i = JDBCUtils.update(con, sql, account.getPassword(), new Date(),
                 account.getRemark(), account.getId());
-        if (i==1){
+        if (i == 1) {
             result.setCode(CodeEnum.SUCCESS.getStatusValue());
             result.setMsg(new ReturnMsg(MsgCode.MSG004).getMsg());
-        }else {
+        } else {
             result.setCode(CodeEnum.FAULT.getStatusValue());
             result.setMsg(new ReturnMsg(MsgCode.ERR005).getMsg());
         }
@@ -82,10 +83,10 @@ public class LoginDaoImpl implements LoginDao {
         Result result = new Result();
         String sql = "delete from account where id = ?";
         int i = JDBCUtils.update(con, sql, id);
-        if (i==1){
+        if (i == 1) {
             result.setCode(CodeEnum.SUCCESS.getStatusValue());
             result.setMsg(new ReturnMsg(MsgCode.MSG003).getMsg());
-        }else {
+        } else {
             result.setCode(CodeEnum.FAULT.getStatusValue());
             result.setMsg(new ReturnMsg(MsgCode.ERR006).getMsg());
         }
@@ -97,10 +98,10 @@ public class LoginDaoImpl implements LoginDao {
         Result result = new Result();
         String sql = "select * from login_status where accountName =? and status = 2";
         int i = JDBCUtils.queryForInt(con, sql, username);
-        if (i!=1){
+        if (i != 1) {
             result.setCode(CodeEnum.SUCCESS.getStatusValue());
             result.setMsg(new ReturnMsg(MsgCode.MSG011).getMsg());
-        }else {
+        } else {
             result.setCode(CodeEnum.FAULT.getStatusValue());
             result.setMsg(new ReturnMsg(MsgCode.ERR011).getMsg());
         }
@@ -110,13 +111,13 @@ public class LoginDaoImpl implements LoginDao {
     @Override
     public void insertLog(LoginStatus loginStatus) {
         String sql = "select * from login_status where accountName =? and status = 2";
-        JDBCUtils.update(con, sql, loginStatus.getId(),loginStatus.getAccountName(),loginStatus.getUserId(),
-                loginStatus.getLoginTime(),loginStatus.getLoginResult(),loginStatus.getIp());
+        JDBCUtils.update(con, sql, loginStatus.getId(), loginStatus.getAccountName(), loginStatus.getUserId(),
+                loginStatus.getLoginTime(), loginStatus.getLoginResult(), loginStatus.getIp());
     }
 
     @Override
     public void delLoginLog(String id) {
-        String sql ="delete from login_status where accountId = ";
+        String sql = "delete from login_status where accountId = ";
         JDBCUtils.update(con, sql);
     }
 

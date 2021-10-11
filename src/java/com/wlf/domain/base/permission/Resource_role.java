@@ -17,16 +17,16 @@ import java.sql.Timestamp;
 @Table("b_resource_role")
 public class Resource_role {
     @TablePk
-    @Column(value = "id",type = DbType.Varchar,length = 64,remark = "id")
+    @Column(value = "id", type = DbType.Varchar, length = 64, remark = "id")
     private String id;
-    @Column(value = "resourceId",type = DbType.Varchar,length = 64,remark = "权限Id")
+    @Column(value = "resourceId", type = DbType.Varchar, length = 64, remark = "权限Id")
     private String resourceId;
-    @Column(value = "role",type = DbType.Varchar,length = 64,remark = "角色Id")
+    @Column(value = "role", type = DbType.Varchar, length = 64, remark = "角色Id")
     private String role;
-    @Column(value = "createTime",type = DbType.DateTime,remark = "创建时间")
+    @Column(value = "createTime", type = DbType.DateTime, remark = "创建时间")
     private Timestamp createTime;
-    @Column(value = "updateTime",type = DbType.DateTime,remark = "更新时间")
+    @Column(value = "updateTime", type = DbType.DateTime, remark = "更新时间")
     private Timestamp updateTime;
-    @Column(value = "remark",type = DbType.Text,remark = "备注")
+    @Column(value = "remark", type = DbType.Text, remark = "备注")
     private String remark;
 }

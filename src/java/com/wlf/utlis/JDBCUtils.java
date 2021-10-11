@@ -10,28 +10,30 @@ import java.util.*;
 
 /**
  * 数据库操作类
+ *
  * @author QinShijiao
  * @version 1.0
  * @createTime 2021/4/27 12:04
-*/
+ */
 public class JDBCUtils {
     /**
-        * 数据库更新
-        * @author Qin ShiJiao
-        * @createTime 2021/4/30 6:06
-    */
-    public static int update(Connection conn, String sql, Object...obj) {
+     * 数据库更新
+     *
+     * @author Qin ShiJiao
+     * @createTime 2021/4/30 6:06
+     */
+    public static int update(Connection conn, String sql, Object... obj) {
         PreparedStatement ps = null;
         int res;
         try {
             ps = conn.prepareStatement(sql);
             for (int i = 0; i < obj.length; i++) {
-                ps.setObject(i+1, obj[i]);
+                ps.setObject(i + 1, obj[i]);
             }
-            res=ps.executeUpdate();
+            res = ps.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
-            res=-1;
+            res = -1;
         } finally {
             releaseResources(ps);
         }
@@ -45,12 +47,12 @@ public class JDBCUtils {
         try {
             ps = conn.prepareStatement(sql);
             for (int i = 0; i < datalist.size(); i++) {
-                ps.setObject(i+1, datalist.get(i));
+                ps.setObject(i + 1, datalist.get(i));
             }
-            res=ps.executeUpdate();
+            res = ps.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
-            res=-1;
+            res = -1;
         } finally {
             releaseResources(ps);
         }
@@ -58,27 +60,28 @@ public class JDBCUtils {
     }
 
     /**
-        * 简单查询语句,返回一个字符串
-        * @author Qin ShiJiao
-        * @createTime 2021/4/30 6:04
-    */
-    public static String queryForString(Connection conn,String sql,Object...obj){
+     * 简单查询语句,返回一个字符串
+     *
+     * @author Qin ShiJiao
+     * @createTime 2021/4/30 6:04
+     */
+    public static String queryForString(Connection conn, String sql, Object... obj) {
         PreparedStatement ps = null;
         ResultSet rs = null;
-        String res =null;
+        String res = null;
         try {
             ps = conn.prepareStatement(sql);
             for (int i = 0; i < obj.length; i++) {
-                ps.setObject(i+1, obj[i]);
+                ps.setObject(i + 1, obj[i]);
             }
             rs = ps.executeQuery();
             ResultSetMetaData rsmd = rs.getMetaData();
-            if(rs.next()){
-                res= rs.getString(rsmd.getColumnLabel(1));
+            if (rs.next()) {
+                res = rs.getString(rsmd.getColumnLabel(1));
             }
         } catch (Exception e) {
             e.printStackTrace();
-            res=null;
+            res = null;
         } finally {
             releaseResources(ps);
             releaseResources(rs);
@@ -89,26 +92,27 @@ public class JDBCUtils {
 
     /**
      * 简单查询语句,返回int值
+     *
      * @author Qin ShiJiao
      * @createTime 2021/4/30 6:04
      */
-    public static Integer queryForInt(Connection conn,String sql,Object...obj){
+    public static Integer queryForInt(Connection conn, String sql, Object... obj) {
         PreparedStatement ps = null;
         ResultSet rs = null;
-        Integer res =-1;
+        Integer res = -1;
         try {
             ps = conn.prepareStatement(sql);
             for (int i = 0; i < obj.length; i++) {
-                ps.setObject(i+1, obj[i]);
+                ps.setObject(i + 1, obj[i]);
             }
             rs = ps.executeQuery();
             ResultSetMetaData rsmd = rs.getMetaData();
-            if(rs.next()){
-                res= rs.getInt(rsmd.getColumnLabel(1));
+            if (rs.next()) {
+                res = rs.getInt(rsmd.getColumnLabel(1));
             }
         } catch (Exception e) {
             e.printStackTrace();
-            res=-1;
+            res = -1;
         } finally {
             releaseResources(ps);
             releaseResources(rs);
@@ -116,23 +120,23 @@ public class JDBCUtils {
         return res;
     }
 
-    public static Integer queryForIntList(Connection conn,String sql,List datalist){
+    public static Integer queryForIntList(Connection conn, String sql, List datalist) {
         PreparedStatement ps = null;
         ResultSet rs = null;
-        Integer res =-1;
+        Integer res = -1;
         try {
             ps = conn.prepareStatement(sql);
             for (int i = 0; i < datalist.size(); i++) {
-                ps.setObject(i+1, datalist.get(i));
+                ps.setObject(i + 1, datalist.get(i));
             }
             rs = ps.executeQuery();
             ResultSetMetaData rsmd = rs.getMetaData();
-            if(rs.next()){
-                res= rs.getInt(rsmd.getColumnLabel(1));
+            if (rs.next()) {
+                res = rs.getInt(rsmd.getColumnLabel(1));
             }
         } catch (Exception e) {
             e.printStackTrace();
-            res=-1;
+            res = -1;
         } finally {
             releaseResources(ps);
             releaseResources(rs);
@@ -141,23 +145,24 @@ public class JDBCUtils {
     }
 
     /**
-        * 可变参数查询,查询结果记录在一个Map集合中
-        * @author Qin ShiJiao
-        * @createTime 2021/4/30 6:06
-    */
-    public static List<Map<String,Object>> queryForList(Connection conn, String sql, Object...obj){
+     * 可变参数查询,查询结果记录在一个Map集合中
+     *
+     * @author Qin ShiJiao
+     * @createTime 2021/4/30 6:06
+     */
+    public static List<Map<String, Object>> queryForList(Connection conn, String sql, Object... obj) {
         PreparedStatement ps = null;
         ResultSet rs = null;
-        List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
+        List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
         try {
             ps = conn.prepareStatement(sql);
             for (int i = 0; i < obj.length; i++) {
-                ps.setObject(i+1, obj[i]);
+                ps.setObject(i + 1, obj[i]);
             }
             rs = ps.executeQuery();
             ResultSetMetaData rsmd = rs.getMetaData();
             int columnCount = rsmd.getColumnCount();
-            Map<String,Object> map = null;
+            Map<String, Object> map = null;
             hasNext(rs, list, rsmd, columnCount);
         } catch (Exception e) {
             e.printStackTrace();
@@ -170,10 +175,10 @@ public class JDBCUtils {
 
     private static void hasNext(ResultSet rs, List<Map<String, Object>> list, ResultSetMetaData rsmd, int columnCount) throws SQLException {
         Map<String, Object> map;
-        while(rs.next()){
+        while (rs.next()) {
             map = new HashMap<String, Object>();
             for (int i = 0; i < columnCount; i++) {
-                String colunmName = rsmd.getColumnLabel(i+1);
+                String colunmName = rsmd.getColumnLabel(i + 1);
                 Object columnValue = rs.getObject(colunmName);
                 map.put(colunmName, columnValue);
             }
@@ -182,19 +187,19 @@ public class JDBCUtils {
     }
 
     //重载
-    public static List<Map<String,Object>> queryForList_list(Connection conn, String sql, List datalist){
+    public static List<Map<String, Object>> queryForList_list(Connection conn, String sql, List datalist) {
         PreparedStatement ps = null;
         ResultSet rs = null;
-        List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
+        List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
         try {
             ps = conn.prepareStatement(sql);
             for (int i = 0; i < datalist.size(); i++) {
-                ps.setObject(i+1, datalist.get(i));
+                ps.setObject(i + 1, datalist.get(i));
             }
             rs = ps.executeQuery();
             ResultSetMetaData rsmd = rs.getMetaData();
             int columnCount = rsmd.getColumnCount();
-            Map<String,Object> map = null;
+            Map<String, Object> map = null;
             hasNext(rs, list, rsmd, columnCount);
         } catch (Exception e) {
             e.printStackTrace();
@@ -207,23 +212,23 @@ public class JDBCUtils {
 
     /*当形参为Object[]数组时，调用该方法必须为一个数组
        当形参为Object...objects时，调用就相当灵活了，可以不带参数，可以带一个参数或者多个参数，也可以带数组作为参数*/
-    public static List<Map<String,Object>> queryForListForKeyLower(Connection conn,String sql,Object...obj){
+    public static List<Map<String, Object>> queryForListForKeyLower(Connection conn, String sql, Object... obj) {
         PreparedStatement ps = null;
         ResultSet rs = null;
-        List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
+        List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
         try {
             ps = conn.prepareStatement(sql);
             for (int i = 0; i < obj.length; i++) {
-                ps.setObject(i+1, obj[i]);
+                ps.setObject(i + 1, obj[i]);
             }
             rs = ps.executeQuery();
             ResultSetMetaData rsmd = rs.getMetaData();
             int columnCount = rsmd.getColumnCount();
-            Map<String,Object> map = null;
-            while(rs.next()){
+            Map<String, Object> map = null;
+            while (rs.next()) {
                 map = new HashMap<String, Object>();
                 for (int i = 0; i < columnCount; i++) {
-                    String colunmName = rsmd.getColumnLabel(i+1);
+                    String colunmName = rsmd.getColumnLabel(i + 1);
                     Object columnValue = rs.getObject(colunmName);
                     map.put(colunmName.toLowerCase(), columnValue);
                 }
@@ -239,31 +244,33 @@ public class JDBCUtils {
     }
 
     /**
-        * 开启数据库连接,使用druid连接池
-        * @author Qin ShiJiao
-        * @createTime 2021/4/30 6:07
-    */
+     * 开启数据库连接,使用druid连接池
+     *
+     * @author Qin ShiJiao
+     * @createTime 2021/4/30 6:07
+     */
     public static Connection openConnection() {
         Properties properties = new Properties();
         InputStream stream = JDBCUtils.class.getClassLoader().getResourceAsStream("db.properties");
         Connection con = null;
-        try{
-        properties.load(stream);
+        try {
+            properties.load(stream);
             DataSource dataSource = DruidDataSourceFactory.createDataSource(properties);
             con = dataSource.getConnection();
-        } catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return con;
     }
 
     /**
-        * 归还连接池连接
-        * @author Qin ShiJiao
-        * @createTime 2021/4/30 6:08
-    */
-    public static <T> void releaseResources (T t){
-        if(t != null){
+     * 归还连接池连接
+     *
+     * @author Qin ShiJiao
+     * @createTime 2021/4/30 6:08
+     */
+    public static <T> void releaseResources(T t) {
+        if (t != null) {
             try {
                 // 利用反射，获取class对象
                 Class<?> aClass = t.getClass();

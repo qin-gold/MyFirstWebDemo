@@ -12,7 +12,7 @@ public class LoginFilter extends BaseFilter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws IOException, ServletException {
         request.setCharacterEncoding("utf-8");
         System.out.println("每一个请求都过");
-        filterChain.doFilter(request,response);
+        filterChain.doFilter(request, response);
     }
 
 }

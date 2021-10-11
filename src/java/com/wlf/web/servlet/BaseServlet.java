@@ -12,6 +12,7 @@ import java.io.IOException;
 
 /**
  * 一个模板Servlet
+ *
  * @author QinShijiao
  * @version 1.0
  * @date 2021-04-28 15:11
@@ -38,15 +39,15 @@ public class BaseServlet extends HttpServlet {
     }
 
     protected void returnJson(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        this.postJson(req,resp);
+        this.postJson(req, resp);
     }
 
     protected void defaultReturn(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        this.post(req,resp);
+        this.post(req, resp);
     }
 
-    protected void engineStart(HttpServletRequest req, HttpServletResponse resp,String path) throws ServletException, IOException{
+    protected void engineStart(HttpServletRequest req, HttpServletResponse resp, String path) throws ServletException, IOException {
         TemplateEngine engine = ThymeleafListener.getTemplateEngine(req.getServletContext());
-        engine.process(path,new WebContext(req,resp,req.getServletContext()),resp.getWriter());
+        engine.process(path, new WebContext(req, resp, req.getServletContext()), resp.getWriter());
     }
 }

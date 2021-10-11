@@ -9,6 +9,7 @@ import java.lang.annotation.Target;
 
 /**
  * 这是设置字段的注解
+ *
  * @author QinShijiao
  * @version 1.0
  * @createTime 2021/4/30 4:09
@@ -17,8 +18,12 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Column {
     String value();
+
     DbType type();
+
     int length() default 32;
+
     boolean notNull() default false;
+
     String remark() default "";
 }

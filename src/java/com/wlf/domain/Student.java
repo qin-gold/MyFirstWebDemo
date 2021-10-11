@@ -6,9 +6,10 @@ import java.sql.Timestamp;
 
 /**
  * 学生实体类
+ *
  * @author QinShiJiao
  * @createTime 2021/4/26 23:06
-*/
+ */
 @Data
 public class Student {
     private String id;

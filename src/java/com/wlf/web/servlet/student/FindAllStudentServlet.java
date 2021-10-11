@@ -25,10 +25,10 @@ public class FindAllStudentServlet extends BaseServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.defaultReturn(req,resp);
+        super.defaultReturn(req, resp);
         QueryConditions bean = Inject.getBean(req, QueryConditions.class);
         Result all = server.findAll(bean);
-        req.setAttribute("student",all.getData());
-        super.engineStart(req,resp,"user/login");
+        req.setAttribute("student", all.getData());
+        super.engineStart(req, resp, "user/login");
     }
 }

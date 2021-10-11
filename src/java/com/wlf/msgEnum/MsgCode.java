@@ -2,9 +2,10 @@ package com.wlf.msgEnum;
 
 /**
  * 这是一个消息读取类
+ *
  * @author QinShijiao
  * @version 1.0
- * @createDate  2021/4/26 23:59
+ * @createDate 2021/4/26 23:59
  */
 public class MsgCode {
     public static final String MSG001 = "msg001";

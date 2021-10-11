@@ -45,10 +45,10 @@ public class StudentDaoImpl implements StudentDao {
         Result result = new Result();
         StringBuffer buffer = new StringBuffer("select * from student ");
         if (!"".equals(str)) {
-            buffer.append("where name like concat('%','"+str+"','%') ");
+            buffer.append("where name like concat('%','" + str + "','%') ");
         }
         buffer.append(" order by createTime desc limit ? , ?");
-        List<Map<String, Object>> maps = JDBCUtils.queryForList(con, String.valueOf(buffer) ,page, size);
+        List<Map<String, Object>> maps = JDBCUtils.queryForList(con, String.valueOf(buffer), page, size);
         result.setCode(CodeEnum.SUCCESS.getStatusZh());
         result.setMsg(new ReturnMsg(MsgCode.MSG001).getMsg());
         result.setData(maps);
@@ -60,8 +60,8 @@ public class StudentDaoImpl implements StudentDao {
         Result result = new Result();
         JDBCUtils.openConnection();
         String sql = "insert into student (id,name,age,number,address,createTime,remark) values (?,?,?,?,?,?,?)";
-        List<Map<String, Object>> maps = JDBCUtils.queryForList(con, sql, student.getId(),student.getName(),
-                student.getNumber(),student.getAddress(),student.getCreateTime(),student.getRemark());
+        List<Map<String, Object>> maps = JDBCUtils.queryForList(con, sql, student.getId(), student.getName(),
+                student.getNumber(), student.getAddress(), student.getCreateTime(), student.getRemark());
         if (!maps.isEmpty()) {
             result.setCode(CodeEnum.SUCCESS.getStatusZh());
             result.setMsg(new ReturnMsg(MsgCode.MSG002).getMsg());
@@ -78,12 +78,12 @@ public class StudentDaoImpl implements StudentDao {
     public Result update(Student student) {
         Result result = new Result();
         String sql = "update student set name = ?,age = ?,number =?,address =?,updateTime =? ,remark =? where id = ?";
-        int i = JDBCUtils.update(con, sql, student.getName(),student.getNumber(),student.getAddress(), new Date(),
+        int i = JDBCUtils.update(con, sql, student.getName(), student.getNumber(), student.getAddress(), new Date(),
                 student.getRemark(), student.getId());
-        if (i==1){
+        if (i == 1) {
             result.setCode(CodeEnum.SUCCESS.getStatusZh());
             result.setMsg(new ReturnMsg(MsgCode.MSG004).getMsg());
-        }else {
+        } else {
             result.setCode(CodeEnum.FAULT.getStatusZh());
             result.setMsg(new ReturnMsg(MsgCode.ERR005).getMsg());
         }
@@ -95,10 +95,10 @@ public class StudentDaoImpl implements StudentDao {
         Result result = new Result();
         String sql = "delete from student where id = ?";
         int i = JDBCUtils.update(con, sql, id);
-        if (i==1){
+        if (i == 1) {
             result.setCode(CodeEnum.SUCCESS.getStatusValue());
             result.setMsg(new ReturnMsg(MsgCode.MSG003).getMsg());
-        }else {
+        } else {
             result.setCode(CodeEnum.FAULT.getStatusValue());
             result.setMsg(new ReturnMsg(MsgCode.ERR006).getMsg());
         }

@@ -11,6 +11,7 @@ import javax.servlet.ServletContextListener;
 
 /**
  * 初始化thymeleaf
+ *
  * @author QinShijiao
  * @version 1.0
  * @createTime 2021/10/9 0:03
@@ -37,7 +38,7 @@ public class ThymeleafListener extends BaseListener {
         tmp.setCacheable(false);
         TemplateEngine engine = new TemplateEngine();
         engine.setTemplateResolver(tmp);
-        storeTemplateEngine(ser.getServletContext(),engine);
+        storeTemplateEngine(ser.getServletContext(), engine);
     }
 
     @Override

@@ -12,6 +12,7 @@ import java.util.*;
  * 当前方法同一个name存在多个值存在只会读取第一个值
  * 功能类似于SpringMvc的自动装配
  * 类似于JFinal的getBean方法
+ *
  * @author QinShijiao
  * @version 1.0
  * @date 2021-04-28 15:57
@@ -24,53 +25,57 @@ public class Inject<T> {
     private static Set<String> set;
     private static Object ts;
 
-    /** 暴力注入
+    /**
+     * 暴力注入
+     *
      * @param request
      * @param t
      * @param <T>
      * @return
      */
     @SuppressWarnings("unchecked")
-    public static <T> T getBeanForce(HttpServletRequest request, Class<T> t){
-        try{
+    public static <T> T getBeanForce(HttpServletRequest request, Class<T> t) {
+        try {
             forBean(request, (Class<Object>) t);
-                set.stream().filter(item->parameterMap.containsKey(simpleName+'.'+item)).forEach(item->{
-                    try {
-                        Field field = t.getDeclaredField(item);
-                        //暴力注入
-                        field.setAccessible(true);
-                        field.set(ts,parameterMap.get(simpleName+'.'+item)[0]);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                } );
+            set.stream().filter(item -> parameterMap.containsKey(simpleName + '.' + item)).forEach(item -> {
+                try {
+                    Field field = t.getDeclaredField(item);
+                    //暴力注入
+                    field.setAccessible(true);
+                    field.set(ts, parameterMap.get(simpleName + '.' + item)[0]);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
             return (T) ts;
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
-       return null;
+        return null;
     }
 
-    /** 非暴力注入
+    /**
+     * 非暴力注入
+     *
      * @param request
      * @param t
      * @param <T>
      * @return
      */
     @SuppressWarnings("unchecked")
-    public static <T> T getBean(HttpServletRequest request, Class<T> t){
-        try{
-           forBean(request, (Class<Object>) t);
-               set.stream().filter(item->parameterMap.containsKey(simpleName+'.'+item)).forEach(item->{
-                   try {
-                       Method method = t.getMethod("set"+ DataKitUtils.firstCharToLowerCase(item),String.class);
-                       method.invoke(ts,parameterMap.get(simpleName+'.'+item)[0]);
-                   } catch (Exception e) {
-                       e.printStackTrace();
-                   }
-               } );
+    public static <T> T getBean(HttpServletRequest request, Class<T> t) {
+        try {
+            forBean(request, (Class<Object>) t);
+            set.stream().filter(item -> parameterMap.containsKey(simpleName + '.' + item)).forEach(item -> {
+                try {
+                    Method method = t.getMethod("set" + DataKitUtils.firstCharToLowerCase(item), String.class);
+                    method.invoke(ts, parameterMap.get(simpleName + '.' + item)[0]);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
             return (T) ts;
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;

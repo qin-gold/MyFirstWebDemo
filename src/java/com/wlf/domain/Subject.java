@@ -6,6 +6,7 @@ import java.sql.Timestamp;
 
 /**
  * 老师科目实体类
+ *
  * @author QinShijiao
  * @version 1.0
  * @createDate 2021/4/26 23:09

@@ -18,6 +18,7 @@ import java.util.Set;
  * Http注解扫描器
  * 通过init方法传入包名和注解名添加扫描
  * Reflections reflection = new Reflections(packageName) 传入一个包位置扫描包中的class
+ *
  * @author QinShijiao
  * @version 1.0
  * @createTime 2021/10/8 9:26
@@ -48,7 +49,9 @@ public class Scanner {
         throw new RuntimeException("未找到对应的注解");
     }
 
-    /** 初始化Servlet
+    /**
+     * 初始化Servlet
+     *
      * @param reflections 获取的反射对象
      * @return
      */
@@ -68,7 +71,9 @@ public class Scanner {
         return map;
     }
 
-    /** 初始化Filter
+    /**
+     * 初始化Filter
+     *
      * @param reflections 获取的反射对象
      * @return
      */
@@ -88,7 +93,9 @@ public class Scanner {
         return map;
     }
 
-    /** 初始化Listener
+    /**
+     * 初始化Listener
+     *
      * @param reflections 获取的反射对象
      * @return
      */
@@ -105,7 +112,7 @@ public class Scanner {
         return map;
     }
 
-    private static void initDb(Reflections reflections){
+    private static void initDb(Reflections reflections) {
         Set<Class<?>> annotated = reflections.getTypesAnnotatedWith(Table.class);
         annotated.forEach(DbGenerator::createTable);
     }

@@ -15,6 +15,7 @@ import java.util.Properties;
 
 /**
  * 读取注解初始化数据库
+ *
  * @author QinShijiao
  * @version 1.0
  * @createTime 2021/4/30 4:59
@@ -22,7 +23,7 @@ import java.util.Properties;
 public class DbGenerator {
     private static final Log log = LogFactory.get();
 
-    public static void createTable(Class<?> classes){
+    public static void createTable(Class<?> classes) {
         Properties pro = PropertiesLoadUtils.load("config.properties");
         if (!Boolean.parseBoolean(pro.getProperty("GeneraMode"))) {
             log.info("生成模式未启动", Level.INFO);
@@ -32,15 +33,15 @@ public class DbGenerator {
         StringBuilder drop = new StringBuilder();
         StringBuilder create = new StringBuilder();
         boolean present = classes.isAnnotationPresent(Table.class);
-        if (!present){
+        if (!present) {
             return;
         }
         String tableName = classes.getAnnotation(Table.class).value();
-        String sql = "select 1 from information_schema.tables where TABLE_SCHEMA = '"+pro.getProperty("databaseName")+"' and table_name ='"+tableName+"';";
+        String sql = "select 1 from information_schema.tables where TABLE_SCHEMA = '" + pro.getProperty("databaseName") + "' and table_name ='" + tableName + "';";
         int s = JDBCUtils.queryForInt(conn, sql);
-        if (s==1){
+        if (s == 1) {
             if (!Boolean.parseBoolean(pro.getProperty("forceGenera"))) {
-                log.warn(tableName+" 数据库中该表已经存在", Level.WARN);
+                log.warn(tableName + " 数据库中该表已经存在", Level.WARN);
                 return;
             }
         }
@@ -50,15 +51,15 @@ public class DbGenerator {
         for (Field field : fields) {
             TablePk pk = field.getAnnotation(TablePk.class);
             Column column = field.getAnnotation(Column.class);
-            if (column!=null){
+            if (column != null) {
                 create.append(column.value()).append(" ")
                         .append(column.type().getValue())
-                        .append((column.type()== DbType.Varchar||column.type()==DbType.Char)?" ("+column.length()+") ":" ")
-                        .append(column.notNull()?" not null ":"");
-                if (pk!=null){
-                    if (pk.isPk()){
+                        .append((column.type() == DbType.Varchar || column.type() == DbType.Char) ? " (" + column.length() + ") " : " ")
+                        .append(column.notNull() ? " not null " : "");
+                if (pk != null) {
+                    if (pk.isPk()) {
                         create.append(" primary key ")
-                                .append(pk.increment()?" AUTO_INCREMENT ":"");
+                                .append(pk.increment() ? " AUTO_INCREMENT " : "");
                     }
                 }
                 if (!"".equals(column.remark())) {
@@ -70,17 +71,17 @@ public class DbGenerator {
             }
         }
         //删除多的逗号
-        create.deleteCharAt(create.length()-1);
+        create.deleteCharAt(create.length() - 1);
         //拼接最后的括号
         create.append(")");
-        try{
-            log.log(Level.INFO,drop.toString());
+        try {
+            log.log(Level.INFO, drop.toString());
             JDBCUtils.update(conn, drop.toString());
-            log.log(Level.INFO,create.toString());
+            log.log(Level.INFO, create.toString());
             JDBCUtils.update(conn, create.toString());
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             try {
                 conn.close();
             } catch (SQLException e) {

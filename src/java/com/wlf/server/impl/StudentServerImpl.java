@@ -8,7 +8,7 @@ import com.wlf.server.StudentServer;
 import com.wlf.domain.dto.Result;
 
 public class StudentServerImpl implements StudentServer {
-    private final StudentDao studentDao =new StudentDaoImpl();
+    private final StudentDao studentDao = new StudentDaoImpl();
 
     @Override
     public Result findById(String id) {

@@ -1,8 +1,10 @@
 package com.wlf.server.impl;
 
+import cn.hutool.Hutool;
+import cn.hutool.crypto.SmUtil;
 import com.wlf.dao.LoginDao;
 import com.wlf.dao.impl.LoginDaoImpl;
-import com.wlf.domain.Account;
+import com.wlf.domain.base.Account;
 import com.wlf.server.LoginServer;
 import com.wlf.utlis.MD5Utils;
 import com.wlf.domain.dto.Result;
@@ -16,7 +18,7 @@ public class LoginServerImpl implements LoginServer {
     private final LoginDao loginDao =new LoginDaoImpl();
     @Override
     public Result login(Account account) {
-        account.setPassword(MD5Utils.md5(account.getPassword()));
+        account.setPassword(SmUtil.sm3(account.getPassword()));
         return loginDao.login(account);
     }
 

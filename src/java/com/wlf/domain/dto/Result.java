@@ -6,10 +6,11 @@ import lombok.NoArgsConstructor;
 
 /**
  * 这是一个数据封转类
+ *
  * @author QinShijiao
  * @version 1.0
  * @createTime 2021/4/26 23:56
-*/
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

@@ -21,7 +21,7 @@ public class LoginAccountServlet extends BaseServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         super.returnJson(req, resp);
         LoginServer login = new LoginServerImpl();
-        Account account = Inject.getBean(req,Account.class);
+        Account account = Inject.getBean(req, Account.class);
         Result result = login.login(account);
         String json = JSON.toJSONString(result);
         resp.getWriter().write(json);
