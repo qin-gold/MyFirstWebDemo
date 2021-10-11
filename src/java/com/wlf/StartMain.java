@@ -21,13 +21,11 @@ import java.util.*;
  */
 public class StartMain {
     private static final Log log = LogFactory.get();
-
     private static final String ContextPath;
     private static final String Port;
     private static final String ViewPath;
     private static final String ScannerWeb;
     private static final String ScannerModel;
-
     private static Map<Class<?>, String> map = new HashMap<>();
     private static Set<Class<?>> set = new HashSet<>();
 
@@ -50,6 +48,7 @@ public class StartMain {
         /***********************************/
         log.info("加载Web开始", Level.INFO);
         map = Scanner.init(ScannerWeb, com.wlf.annotation.Filter.class);
+        assert map != null;
         set = map.keySet();
         for (Class<?> aClass : set) {
             String mapping = map.get(aClass);
@@ -59,6 +58,7 @@ public class StartMain {
         map.clear();
         set.clear();
         map = Scanner.init(ScannerWeb, com.wlf.annotation.Servlet.class);
+        assert map != null;
         set = map.keySet();
         for (Class<?> aClass : set) {
             String url_patton = map.get(aClass);
@@ -68,6 +68,7 @@ public class StartMain {
         map.clear();
         set.clear();
         map = Scanner.init(ScannerWeb, com.wlf.annotation.Listener.class);
+        assert map != null;
         set = map.keySet();
         for (Class<?> aClass : set) {
             log.log(Level.INFO, "加载Listener------  " + aClass.toString());
