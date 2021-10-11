@@ -1,6 +1,6 @@
 package com.wlf.server;
 
-import com.wlf.domain.Account;
+import com.wlf.domain.base.Account;
 import com.wlf.domain.dto.Result;
 
 /**

@@ -3,6 +3,7 @@ package com.wlf.utlis;
 import com.wlf.annotation.Filter;
 import com.wlf.annotation.Listener;
 import com.wlf.annotation.Servlet;
+import com.wlf.annotation.Table;
 import com.wlf.web.filter.BaseFilter;
 import com.wlf.web.listener.BaseListener;
 import com.wlf.web.servlet.BaseServlet;
@@ -24,7 +25,7 @@ import java.util.Set;
 public class Scanner {
 
     /**
-     * 存储数据的map集合
+     * 初始化使用的Map集合
      */
     private static final Map<Class<?>, String> map = new HashMap<>();
 
@@ -40,7 +41,11 @@ public class Scanner {
         if (ano.equals(Servlet.class)) return initServlet(reflection);
         if (ano.equals(Filter.class)) return initFilter(reflection);
         if (ano.equals(Listener.class)) return initListener(reflection);
-        throw new RuntimeException("注解有误");
+        if (ano.equals(Table.class)) {
+            initDb(reflection);
+            return null;
+        }
+        throw new RuntimeException("未找到对应的注解");
     }
 
     /** 初始化Servlet
@@ -49,12 +54,12 @@ public class Scanner {
      */
     private static Map<Class<?>, String> initServlet(Reflections reflections) {
         Set<Class<?>> annotated = reflections.getTypesAnnotatedWith(Servlet.class);
-        annotated.forEach(math -> {
+        annotated.forEach(data -> {
             try {
-                Class<?> superclass = math.getSuperclass();
+                Class<?> superclass = data.getSuperclass();
                 if (superclass.equals(BaseServlet.class)) {
-                    Servlet annotations = math.getAnnotation(Servlet.class);
-                    map.put(math, annotations.mapping());
+                    Servlet annotations = data.getAnnotation(Servlet.class);
+                    map.put(data, annotations.mapping());
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -69,13 +74,12 @@ public class Scanner {
      */
     private static Map<Class<?>, String> initFilter(Reflections reflections) {
         Set<Class<?>> annotated = reflections.getTypesAnnotatedWith(Filter.class);
-        annotated.forEach(math ->
-        {
+        annotated.forEach(data -> {
             try {
-                Class<?> superclass = math.getSuperclass();
+                Class<?> superclass = data.getSuperclass();
                 if (superclass.equals(BaseFilter.class)) {
-                    Filter annotations = math.getAnnotation(Filter.class);
-                    map.put(math, annotations.urlPatton());
+                    Filter annotations = data.getAnnotation(Filter.class);
+                    map.put(data, annotations.urlPatton());
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -90,15 +94,19 @@ public class Scanner {
      */
     private static Map<Class<?>, String> initListener(Reflections reflections) {
         Set<Class<?>> annotated = reflections.getTypesAnnotatedWith(Listener.class);
-        annotated.forEach(math ->
-        {
+        annotated.forEach(data -> {
             try {
-                Class<?> superclass = math.getSuperclass();
-                if (superclass.equals(BaseListener.class)) map.put(math, null);
+                Class<?> superclass = data.getSuperclass();
+                if (superclass.equals(BaseListener.class)) map.put(data, null);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         });
         return map;
+    }
+
+    private static void initDb(Reflections reflections){
+        Set<Class<?>> annotated = reflections.getTypesAnnotatedWith(Table.class);
+        annotated.forEach(DbGenerator::createTable);
     }
 }

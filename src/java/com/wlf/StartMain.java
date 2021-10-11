@@ -1,8 +1,10 @@
 package com.wlf;
 
+import cn.hutool.log.Log;
+import cn.hutool.log.LogFactory;
+import cn.hutool.log.level.Level;
+import com.wlf.utlis.PropertiesLoadUtils;
 import com.wlf.utlis.Scanner;
-import com.wlf.web.listener.BaseListener;
-import com.wlf.web.listener.ThymeleafListener;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.webapp.WebAppContext;
 
@@ -10,7 +12,6 @@ import javax.servlet.DispatcherType;
 import javax.servlet.Filter;
 import javax.servlet.Servlet;
 import javax.servlet.ServletContextListener;
-import java.io.IOException;
 import java.util.*;
 
 /**
@@ -19,61 +20,64 @@ import java.util.*;
  * @updateDate 2021/4/28 0:10
  */
 public class StartMain {
-    private static String ContextPath ="/";
-    private static String Port ="80";
-    private static String ViewPath ="/";
-    private static String ScannerPackage ="/";
+    private static final Log log = LogFactory.get();
+
+    private static final String ContextPath;
+    private static final String Port;
+    private static final String ViewPath;
+    private static final String ScannerWeb;
+    private static final String ScannerModel;
+
     private static Map<Class<?>, String> map = new HashMap<>();
     private static Set<Class<?>> set = new HashSet<>();
-    static{
-        Properties pro = new Properties();
-        try {
-            pro.load(StartMain.class.getClassLoader().getResourceAsStream("jettyConfig.properties"));
-            ContextPath = pro.getProperty("ContextPath");
-            Port = pro.getProperty("Port");
-            ViewPath = pro.getProperty("ViewPath");
-            ScannerPackage =pro.getProperty("ScannerPackage");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
+    static {
+        Properties load = PropertiesLoadUtils.load("jettyConfig.properties");
+        ContextPath = load.getProperty("ContextPath");
+        Port = load.getProperty("Port");
+        ViewPath = load.getProperty("ViewPath");
+        ScannerWeb = load.getProperty("ScannerWeb");
+        ScannerModel = load.getProperty("ScannerModel");
     }
+
     @SuppressWarnings("unchecked")
     public static void main(String[] args) throws Exception {
         Server server = new Server(Integer.parseInt(Port));
-        WebAppContext appContext =new WebAppContext();
+        WebAppContext appContext = new WebAppContext();
         appContext.setThrowUnavailableOnStartupException(true);
         appContext.setContextPath(ContextPath);
         appContext.setResourceBase(ViewPath);
         /***********************************/
-        System.out.println("加载资源开始");
-        map = Scanner.init(ScannerPackage, com.wlf.annotation.Filter.class);
+        log.info("加载Web开始", Level.INFO);
+        map = Scanner.init(ScannerWeb, com.wlf.annotation.Filter.class);
         set = map.keySet();
         for (Class<?> aClass : set) {
             String mapping = map.get(aClass);
-            System.out.println("加载Filter------  "+aClass.toString()+" Mapping--------  "+mapping);
-            appContext.addFilter((Class<? extends Filter>) aClass,mapping,EnumSet.of(DispatcherType.FORWARD));
+            log.log(Level.INFO, "加载Filter------  " + aClass.toString() + " Mapping--------  " + mapping);
+            appContext.addFilter((Class<? extends Filter>) aClass, mapping, EnumSet.of(DispatcherType.FORWARD));
         }
         map.clear();
         set.clear();
-        map = Scanner.init(ScannerPackage, com.wlf.annotation.Servlet.class);
+        map = Scanner.init(ScannerWeb, com.wlf.annotation.Servlet.class);
         set = map.keySet();
         for (Class<?> aClass : set) {
             String url_patton = map.get(aClass);
-            System.out.println("加载Servlet------  "+aClass.toString()+" Url_patton--------  "+url_patton);
-            appContext.addServlet((Class<? extends Servlet>) aClass,url_patton);
+            log.log(Level.INFO, "加载Servlet------  " + aClass.toString() + " Url_patton--------  " + url_patton);
+            appContext.addServlet((Class<? extends Servlet>) aClass, url_patton);
         }
         map.clear();
         set.clear();
-        map = Scanner.init(ScannerPackage, com.wlf.annotation.Listener.class);
+        map = Scanner.init(ScannerWeb, com.wlf.annotation.Listener.class);
         set = map.keySet();
         for (Class<?> aClass : set) {
-            System.out.println("加载Listener------  "+aClass.toString());
-            ServletContextListener servletContextListener = (ServletContextListener)aClass.getDeclaredConstructor().newInstance();
+            log.log(Level.INFO, "加载Listener------  " + aClass.toString());
+            ServletContextListener servletContextListener = (ServletContextListener) aClass.getDeclaredConstructor().newInstance();
             appContext.addEventListener(servletContextListener);
         }
-        appContext.addEventListener(new ThymeleafListener());
-        System.out.println("加载资源结束");
+        log.info("加载Web结束", Level.INFO);
+        log.info("加载数据库开始", Level.INFO);
+        Scanner.init(ScannerModel, com.wlf.annotation.Table.class);
+        log.info("加载数据库结束", Level.INFO);
         /***********************************/
         server.setHandler(appContext);
 
