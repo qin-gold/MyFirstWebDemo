@@ -1,10 +1,8 @@
-package com.wlf.web.listener;
+package com.wlf.web.base.listener;
 
 import com.wlf.annotation.Listener;
 
 import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
-import javax.servlet.annotation.WebListener;
 
 /**
  * @author Qin

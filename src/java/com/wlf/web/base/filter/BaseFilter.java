@@ -1,4 +1,4 @@
-package com.wlf.web.filter;
+package com.wlf.web.base.filter;
 
 import javax.servlet.*;
 import java.io.IOException;
@@ -11,7 +11,7 @@ import java.io.IOException;
 public class BaseFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        System.out.println("过滤器加载了");
+
     }
 
     @Override

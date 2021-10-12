@@ -28,7 +28,7 @@ public class LoginDaoImpl implements LoginDao {
     @Override
     public Result login(Account account) {
         Result result = new Result();
-        String sql = "select id from account where username = ? and password = ?";
+        String sql = "select id from b_account where username = ? and password = ?";
         List<Map<String, Object>> list = JDBCUtils.queryForList(con, sql, account.getUsername(), account.getPassword());
         if (!list.isEmpty()) {
             result.setCode(CodeEnum.SUCCESS.getStatusValue());
@@ -42,7 +42,7 @@ public class LoginDaoImpl implements LoginDao {
 
     @Override
     public boolean checkAccount(String username) {
-        String sql = "select id from account where username = ? ";
+        String sql = "select id from b_account where username = ? ";
         int i = JDBCUtils.queryForInt(con, sql, username);
         return i == 1;
     }
@@ -50,7 +50,7 @@ public class LoginDaoImpl implements LoginDao {
     @Override
     public Result insert(Account account) {
         Result result = new Result();
-        String sql = "insert into account(id,username,password,userId,createTime,remark) values (?,?,?,?,?,?)";
+        String sql = "insert into b_account(id,username,password,userId,createTime,remark) values (?,?,?,?,?,?)";
         int i = JDBCUtils.update(con, sql, account.getId(), account.getUsername(), account.getPassword(), account.getUserId(), new Date(), account.getRemark());
         if (i == 1) {
             result.setCode(CodeEnum.SUCCESS.getStatusValue());
@@ -65,7 +65,7 @@ public class LoginDaoImpl implements LoginDao {
     @Override
     public Result update(Account account) {
         Result result = new Result();
-        String sql = "update account set password = ?,updateTime = ?,remark =? where id = ?";
+        String sql = "update b_account set password = ?,updateTime = ?,remark =? where id = ?";
         int i = JDBCUtils.update(con, sql, account.getPassword(), new Date(),
                 account.getRemark(), account.getId());
         if (i == 1) {
@@ -81,7 +81,7 @@ public class LoginDaoImpl implements LoginDao {
     @Override
     public Result delete(String id) {
         Result result = new Result();
-        String sql = "delete from account where id = ?";
+        String sql = "delete from b_account where id = ?";
         int i = JDBCUtils.update(con, sql, id);
         if (i == 1) {
             result.setCode(CodeEnum.SUCCESS.getStatusValue());
@@ -96,7 +96,7 @@ public class LoginDaoImpl implements LoginDao {
     @Override
     public Result isLogin(String username) {
         Result result = new Result();
-        String sql = "select * from login_status where accountName =? and status = 2";
+        String sql = "select * from b_login_status where accountName =? and status = 2";
         int i = JDBCUtils.queryForInt(con, sql, username);
         if (i != 1) {
             result.setCode(CodeEnum.SUCCESS.getStatusValue());
@@ -110,14 +110,14 @@ public class LoginDaoImpl implements LoginDao {
 
     @Override
     public void insertLog(LoginStatus loginStatus) {
-        String sql = "select * from login_status where accountName =? and status = 2";
+        String sql = "select * from b_login_status where accountName =? and status = 2";
         JDBCUtils.update(con, sql, loginStatus.getId(), loginStatus.getAccountName(), loginStatus.getUserId(),
                 loginStatus.getLoginTime(), loginStatus.getLoginResult(), loginStatus.getIp());
     }
 
     @Override
     public void delLoginLog(String id) {
-        String sql = "delete from login_status where accountId = ";
+        String sql = "delete from b_login_status where accountId = ";
         JDBCUtils.update(con, sql);
     }
 

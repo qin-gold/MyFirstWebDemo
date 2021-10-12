@@ -21,43 +21,36 @@ import java.util.*;
  */
 public class StartMain {
     private static final Log log = LogFactory.get();
-    private static final String ContextPath;
-    private static final String Port;
-    private static final String ViewPath;
-    private static final String ScannerWeb;
-    private static final String ScannerModel;
+    private static final Properties jettyConfig;
+    private static final Properties config;
     private static Map<Class<?>, String> map = new HashMap<>();
     private static Set<Class<?>> set = new HashSet<>();
 
     static {
-        Properties load = PropertiesLoadUtils.load("jettyConfig.properties");
-        ContextPath = load.getProperty("ContextPath");
-        Port = load.getProperty("Port");
-        ViewPath = load.getProperty("ViewPath");
-        ScannerWeb = load.getProperty("ScannerWeb");
-        ScannerModel = load.getProperty("ScannerModel");
+        jettyConfig = PropertiesLoadUtils.load("jettyConfig.properties");
+        config = PropertiesLoadUtils.load("config.properties");
     }
 
     @SuppressWarnings("unchecked")
     public static void main(String[] args) throws Exception {
-        Server server = new Server(Integer.parseInt(Port));
+        Server server = new Server(Integer.parseInt(jettyConfig.getProperty("Port")));
         WebAppContext appContext = new WebAppContext();
         appContext.setThrowUnavailableOnStartupException(true);
-        appContext.setContextPath(ContextPath);
-        appContext.setResourceBase(ViewPath);
+        appContext.setContextPath(jettyConfig.getProperty("ContextPath"));
+        appContext.setResourceBase(jettyConfig.getProperty("ViewPath"));
         /***********************************/
         log.info("加载Web开始", Level.INFO);
-        map = Scanner.init(ScannerWeb, com.wlf.annotation.Filter.class);
+        map = Scanner.init(jettyConfig.getProperty("ScannerWeb"), com.wlf.annotation.Filter.class);
         assert map != null;
         set = map.keySet();
         for (Class<?> aClass : set) {
             String mapping = map.get(aClass);
             log.log(Level.INFO, "加载Filter------  " + aClass.toString() + " Mapping--------  " + mapping);
-            appContext.addFilter((Class<? extends Filter>) aClass, mapping, EnumSet.of(DispatcherType.FORWARD));
+            appContext.addFilter((Class<? extends Filter>) aClass, mapping, EnumSet.of(DispatcherType.REQUEST));
         }
         map.clear();
         set.clear();
-        map = Scanner.init(ScannerWeb, com.wlf.annotation.Servlet.class);
+        map = Scanner.init(jettyConfig.getProperty("ScannerWeb"), com.wlf.annotation.Servlet.class);
         assert map != null;
         set = map.keySet();
         for (Class<?> aClass : set) {
@@ -67,7 +60,7 @@ public class StartMain {
         }
         map.clear();
         set.clear();
-        map = Scanner.init(ScannerWeb, com.wlf.annotation.Listener.class);
+        map = Scanner.init(jettyConfig.getProperty("ScannerWeb"), com.wlf.annotation.Listener.class);
         assert map != null;
         set = map.keySet();
         for (Class<?> aClass : set) {
@@ -76,13 +69,15 @@ public class StartMain {
             appContext.addEventListener(servletContextListener);
         }
         log.info("加载Web结束", Level.INFO);
+        if (Boolean.parseBoolean(config.getProperty("GeneraMode"))){
         log.info("加载数据库开始", Level.INFO);
-        Scanner.init(ScannerModel, com.wlf.annotation.Table.class);
+        Scanner.init(jettyConfig.getProperty("ScannerModel"), com.wlf.annotation.Table.class);
         log.info("加载数据库结束", Level.INFO);
+        }
         /***********************************/
         server.setHandler(appContext);
 
-        System.out.println("Starting web server on port: " + Port);
+        System.out.println("Starting web server on port: " + jettyConfig.getProperty("port"));
         server.start();
         System.out.println("Starting Complete. Welcome To The Bast World");
         server.join();

@@ -1,4 +1,4 @@
-package com.wlf.web.servlet.student;
+package com.wlf.web.base.servlet.student;
 
 import com.wlf.annotation.Servlet;
 import com.wlf.domain.dto.QueryConditions;
@@ -6,7 +6,7 @@ import com.wlf.domain.dto.Result;
 import com.wlf.server.StudentServer;
 import com.wlf.server.impl.StudentServerImpl;
 import com.wlf.utlis.Inject;
-import com.wlf.web.servlet.BaseServlet;
+import com.wlf.web.base.servlet.BaseServlet;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;

@@ -10,7 +10,7 @@
 
     <!--配置监听器-->
     <listener>
-        <listener-class>com.wlf.web.listener.StartListener</listener-class>
+        <listener-class>com.wlf.web.base.listener.StartListener</listener-class>
     </listener>
 
     <!--session管理-->
@@ -20,7 +20,7 @@
     
 <!--    <servlet>-->
 <!--        <servlet-name>loginServlet</servlet-name>-->
-<!--        <servlet-class>com.wlf.web.servlet.login.LoginAccountServlet</servlet-class>-->
+<!--        <servlet-class>com.wlf.web.base.servlet.login.LoginAccountServlet</servlet-class>-->
 <!--    </servlet>-->
 <!--    <servlet-mapping>-->
 <!--        <servlet-name>loginServlet</servlet-name>-->

@@ -18,6 +18,7 @@ import java.util.List;
  */
 @Data
 public class UserData {
+    private String id;
     private User user;
     private List<Role> roles;
     private List<Menu> menus;

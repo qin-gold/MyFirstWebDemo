@@ -4,9 +4,9 @@ import com.wlf.annotation.Filter;
 import com.wlf.annotation.Listener;
 import com.wlf.annotation.Servlet;
 import com.wlf.annotation.Table;
-import com.wlf.web.filter.BaseFilter;
-import com.wlf.web.listener.BaseListener;
-import com.wlf.web.servlet.BaseServlet;
+import com.wlf.web.base.filter.BaseFilter;
+import com.wlf.web.base.listener.BaseListener;
+import com.wlf.web.base.servlet.BaseServlet;
 import org.reflections.Reflections;
 
 import java.lang.annotation.Annotation;
@@ -112,6 +112,9 @@ public class Scanner {
         return map;
     }
 
+    /** 初始化数据库
+     * @param reflections
+     */
     private static void initDb(Reflections reflections) {
         Set<Class<?>> annotated = reflections.getTypesAnnotatedWith(Table.class);
         annotated.forEach(DbGenerator::createTable);

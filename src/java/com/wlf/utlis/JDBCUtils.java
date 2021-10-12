@@ -251,7 +251,7 @@ public class JDBCUtils {
      */
     public static Connection openConnection() {
         Properties properties = new Properties();
-        InputStream stream = JDBCUtils.class.getClassLoader().getResourceAsStream("db.properties");
+        InputStream stream = JDBCUtils.class.getClassLoader().getResourceAsStream("config.properties");
         Connection con = null;
         try {
             properties.load(stream);

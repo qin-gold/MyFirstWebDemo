@@ -68,4 +68,9 @@ public class CacheUtils {
     public static LoginStatus getLoginStatus(String id) {
         return getUserCache(id).getLoginStatus();
     }
+
+    public static String getId(String id) {
+        return getUserCache(id).getId();
+    }
+
 }

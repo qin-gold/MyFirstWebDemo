@@ -1,5 +1,6 @@
 package com.wlf.domain.dto;
 
+import com.alibaba.fastjson.JSON;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,4 +19,8 @@ public class Result {
     private String code;
     private String msg;
     private Object data;
+
+    public String toJson(Result result){
+       return JSON.toJSONString(result);
+    }
 }

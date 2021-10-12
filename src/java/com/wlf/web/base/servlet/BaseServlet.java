@@ -1,6 +1,6 @@
-package com.wlf.web.servlet;
+package com.wlf.web.base.servlet;
 
-import com.wlf.web.listener.ThymeleafListener;
+import com.wlf.web.base.listener.ThymeleafListener;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 
@@ -38,8 +38,9 @@ public class BaseServlet extends HttpServlet {
         resp.setContentType("text/html; charset=utf-8");
     }
 
-    protected void returnJson(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void returnJson(HttpServletRequest req, HttpServletResponse resp ,String json) throws ServletException, IOException {
         this.postJson(req, resp);
+        resp.getWriter().write(json);
     }
 
     protected void defaultReturn(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

@@ -31,4 +31,5 @@ public class MsgCode {
     public static final String ERR009 = "err009";
     public static final String ERR010 = "err010";
     public static final String ERR011 = "err011";
+    public static final String ERR012 = "err012";
 }

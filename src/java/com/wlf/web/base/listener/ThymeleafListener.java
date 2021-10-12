@@ -1,4 +1,4 @@
-package com.wlf.web.listener;
+package com.wlf.web.base.listener;
 
 import com.wlf.annotation.Listener;
 import org.thymeleaf.TemplateEngine;
@@ -7,7 +7,6 @@ import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
 
 /**
  * 初始化thymeleaf
