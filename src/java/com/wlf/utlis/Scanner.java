@@ -12,10 +12,11 @@ import org.reflections.Reflections;
 import java.lang.annotation.Annotation;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 
 /**
- * Http注解扫描器
+ * 注解扫描器
  * 通过init方法传入包名和注解名添加扫描
  * Reflections reflection = new Reflections(packageName) 传入一个包位置扫描包中的class
  *
@@ -112,8 +113,8 @@ public class Scanner {
         return map;
     }
 
-    /** 初始化数据库
-     * @param reflections
+    /** 初始化数据库表
+     * @param reflections 获取的反射对象
      */
     private static void initDb(Reflections reflections) {
         Set<Class<?>> annotated = reflections.getTypesAnnotatedWith(Table.class);

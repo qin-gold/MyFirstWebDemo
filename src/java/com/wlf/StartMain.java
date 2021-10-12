@@ -6,6 +6,9 @@ import cn.hutool.log.level.Level;
 import com.wlf.utlis.PropertiesLoadUtils;
 import com.wlf.utlis.Scanner;
 import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.handler.ContextHandler;
+import org.eclipse.jetty.servlet.ServletMapping;
+import org.eclipse.jetty.util.Attributes;
 import org.eclipse.jetty.webapp.WebAppContext;
 
 import javax.servlet.DispatcherType;
@@ -75,9 +78,13 @@ public class StartMain {
         log.info("加载数据库结束", Level.INFO);
         }
         /***********************************/
+        ServletMapping[] mappings = appContext.getServletHandler().getServletMappings();
+        for (ServletMapping mapping : mappings) {
+            System.out.println(mapping.getServletName());
+            System.out.println(mapping.getPathSpecs().length);
+        }
         server.setHandler(appContext);
-
-        System.out.println("Starting web server on port: " + jettyConfig.getProperty("port"));
+        System.out.println("Starting web server on port: " + jettyConfig.getProperty("Port"));
         server.start();
         System.out.println("Starting Complete. Welcome To The Bast World");
         server.join();

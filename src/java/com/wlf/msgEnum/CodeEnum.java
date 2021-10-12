@@ -1,7 +1,7 @@
 package com.wlf.msgEnum;
 
 /**
- * 一个错误枚举类
+ * http状态枚举类
  * @author QinShijiao
  * @version 1.0
  * @createTime 2021/4/26 22:55

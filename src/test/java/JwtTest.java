@@ -1,13 +1,4 @@
-import cn.hutool.core.date.DateUtil;
-import cn.hutool.crypto.KeyUtil;
-import cn.hutool.jwt.*;
-import cn.hutool.jwt.signers.AlgorithmUtil;
-import cn.hutool.jwt.signers.JWTSigner;
-import cn.hutool.jwt.signers.JWTSignerUtil;
-import com.wlf.utlis.Jwtutils;
-
-import java.nio.charset.StandardCharsets;
-import java.security.KeyPair;
+import com.wlf.utlis.JwtUtils;
 
 /**
  * @author QinShijiao
@@ -29,9 +20,9 @@ public class JwtTest {
 //
 //        Object payload = JWT.of(token).getPayload("id");
 //        System.out.println(payload.toString());
-        String token = Jwtutils.create("123123");
+        String token = JwtUtils.create("123123");
         System.out.println(token);
-        System.out.println(Jwtutils.getValue(token));
+        System.out.println(JwtUtils.getValue(token));
 
     }
 }

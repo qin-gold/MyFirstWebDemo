@@ -1,8 +1,12 @@
 package com.wlf.web.base.listener;
 
+import com.mysql.cj.util.LogUtils;
 import com.wlf.annotation.Listener;
+import com.wlf.utlis.PropertiesLoadUtils;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
+import java.util.Properties;
 
 /**
  * @author Qin
@@ -10,9 +14,12 @@ import javax.servlet.ServletContextEvent;
  */
 @Listener
 public class StartListener extends BaseListener {
+
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
-        System.out.println("------项目启动成功------滋滋滋-----");
+        ServletContext context = servletContextEvent.getServletContext();
+        Properties load = PropertiesLoadUtils.load("config.properties");
+        context.setAttribute("config",load);
     }
 
     @Override

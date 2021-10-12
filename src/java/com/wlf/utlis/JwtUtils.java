@@ -7,6 +7,8 @@ import cn.hutool.jwt.JWTValidator;
 import cn.hutool.jwt.signers.JWTSigner;
 import cn.hutool.jwt.signers.JWTSignerUtil;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 
@@ -17,7 +19,7 @@ import java.util.Properties;
  * @version 1.0
  * @createTime 2021/10/11 23:41
  */
-public class Jwtutils {
+public class JwtUtils {
     private static final Properties load;
 
     static {
@@ -38,7 +40,7 @@ public class Jwtutils {
     }
 
     private static JWTSigner initSigner() {
-        return JWTSignerUtil.hs256(load.getProperty("key").getBytes(StandardCharsets.UTF_8));
+        return JWTSignerUtil.hs256(load.getProperty("jwtKey").getBytes(StandardCharsets.UTF_8));
     }
 
     /** 检查加签是否失效
@@ -49,7 +51,7 @@ public class Jwtutils {
         try {
             JWTValidator
                     .of(token)
-                    .validateAlgorithm(JWTSignerUtil.hs256(load.getProperty("key")
+                    .validateAlgorithm(JWTSignerUtil.hs256(load.getProperty("jwtKey")
                             .getBytes(StandardCharsets.UTF_8)))
                     .validateDate(DateUtil.date(),0);
         }catch (ValidateException e){
@@ -67,5 +69,15 @@ public class Jwtutils {
         if (check(token))
         return JWT.of(token).getPayload("id").toString();
         return "";
+    }
+
+    public static String getValue(HttpServletRequest request){
+        Cookie[] cookies = request.getCookies();
+        for (Cookie cookie : cookies) {
+           if ("token".equals(cookie.getName())){
+               return getValue(cookie.getValue());
+           }
+        }
+        return null;
     }
 }
