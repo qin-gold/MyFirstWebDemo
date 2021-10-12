@@ -36,22 +36,23 @@ public class LogFilter extends BaseFilter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         String uri = request.getRequestURI();
-        if (EqualsUtils.equalsAll(request.getRequestURI())){
-                Class<?> aClass = StartMain.getServlet(uri);
-                if (aClass != null) {
-                    String id = JwtUtils.getValue(request);
-                    com.wlf.annotation.Log log = aClass.getAnnotation(com.wlf.annotation.Log.class);
-                    if (log!=null){
-                        String remark = log.remark();
-                        String ip = request.getRemoteAddr();
-                        if (id != null) {
-                            User user = CacheUtils.getUser(id);
-                            logService.save(new com.wlf.domain.base.Log(UUID.fastUUID().toString(),remark,user.getId(),user.getName(),ip,uri,null, log.remark()));
-                            LogFilter.log.info("[+"+log.title()+"+]", Level.INFO);
-                        }
+        if (super.withOutFilter(request)){
+            Class<?> aClass = StartMain.getServlet(uri);
+            if (aClass != null) {
+                String id = JwtUtils.getValue(request);
+                com.wlf.annotation.Log log = aClass.getAnnotation(com.wlf.annotation.Log.class);
+                if (log!=null){
+                    String remark = log.remark();
+                    String ip = request.getRemoteAddr();
+                    if (id != null) {
+                        User user = CacheUtils.getUser(id);
+                        logService.save(new com.wlf.domain.base.Log(UUID.fastUUID().toString(),remark,user.getId(),user.getName(),ip,uri,null, log.remark()));
+                        LogFilter.log.info("[+"+log.title()+"+]", Level.INFO);
                     }
                 }
+            }
         }
         filterChain.doFilter(servletRequest,servletResponse);
     }
+
 }

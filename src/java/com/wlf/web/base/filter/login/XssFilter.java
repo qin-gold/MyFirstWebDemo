@@ -20,7 +20,10 @@ import java.io.IOException;
 public class XssFilter extends BaseFilter {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        XssHttpServletRequestWrapper xssRequest = new XssHttpServletRequestWrapper((HttpServletRequest)servletRequest);
-        filterChain.doFilter(xssRequest, servletResponse);
+        if (super.withOutFilter(servletRequest)) {
+            XssHttpServletRequestWrapper xssRequest = new XssHttpServletRequestWrapper((HttpServletRequest)servletRequest);
+            filterChain.doFilter(xssRequest, servletResponse);
+        }
+        filterChain.doFilter(servletRequest, servletResponse);
     }
 }
