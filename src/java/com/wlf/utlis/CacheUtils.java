@@ -53,16 +53,8 @@ public class CacheUtils {
         return getUserCache(id).getUser();
     }
 
-    public static List<Role> getRoles(String id){
-        return getUserCache(id).getRoles();
-    }
-
     public static List<Menu> getMenu(String id) {
         return getUserCache(id).getMenus();
-    }
-
-    public static Account getAccount(String id){
-        return getUserCache(id).getAccount();
     }
 
     public static LoginStatus getLoginStatus(String id) {

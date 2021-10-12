@@ -14,7 +14,6 @@ import com.wlf.utlis.JwtUtils;
 import com.wlf.web.base.filter.BaseFilter;
 
 import javax.servlet.*;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -28,7 +27,7 @@ public class LoginFilter extends BaseFilter {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         HttpServletResponse httpServletResponse = (HttpServletResponse) response;
         String uri = httpServletRequest.getRequestURI();
-        if ("/login".equals(uri)||"/register".equals(uri)||"/index".equals(uri)||EqualsUtils.equalsAll(uri)){
+        if ("/".equals(uri)||"/index.html".equals(uri)||"/login".equals(uri)||"/register".equals(uri)||"/index".equals(uri)||EqualsUtils.equalsAll(uri)){
             filterChain.doFilter(request, response);
             return;
         }

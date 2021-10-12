@@ -9,9 +9,9 @@
     <response-character-encoding>utf-8</response-character-encoding>
 
     <!--配置监听器-->
-    <listener>
-        <listener-class>com.wlf.web.base.listener.StartListener</listener-class>
-    </listener>
+<!--    <listener>-->
+<!--        <listener-class>com.wlf.web.base.listener.StartListener</listener-class>-->
+<!--    </listener>-->
 
     <!--session管理-->
     <session-config>
@@ -28,19 +28,19 @@
 <!--    </servlet-mapping>-->
     
     <!--默认页面配置-->
-    <welcome-file-list>
-        <welcome-file>/index.html</welcome-file>
-    </welcome-file-list>
+<!--    <welcome-file-list>-->
+<!--        <welcome-file>/index.html</welcome-file>-->
+<!--    </welcome-file-list>-->
     <error-page>
         <error-code>500</error-code>
-        <location>/WEB-INF/pages/error/500.html</location>
+        <location>/src/web/WEB-INF/pages/error/500.html</location>
     </error-page>
     <error-page>
         <error-code>404</error-code>
-        <location>/WEB-INF/pages/error/404.html</location>
+        <location>/src/web/WEB-INF/pages/error/404.html</location>
     </error-page>
     <error-page>
         <error-code>403</error-code>
-        <location>/WEB-INF/pages/error/403.html</location>
+        <location>/src/web/WEB-INF/pages/error/403.html</location>
     </error-page>
 </web-app>

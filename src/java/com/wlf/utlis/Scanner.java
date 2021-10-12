@@ -1,9 +1,6 @@
 package com.wlf.utlis;
 
-import com.wlf.annotation.Filter;
-import com.wlf.annotation.Listener;
-import com.wlf.annotation.Servlet;
-import com.wlf.annotation.Table;
+import com.wlf.annotation.*;
 import com.wlf.web.base.filter.BaseFilter;
 import com.wlf.web.base.listener.BaseListener;
 import com.wlf.web.base.servlet.BaseServlet;
@@ -47,6 +44,7 @@ public class Scanner {
             initDb(reflection);
             return null;
         }
+        if (ano.equals(Log.class)) scannerLog(reflection);
         throw new RuntimeException("未找到对应的注解");
     }
 
@@ -119,5 +117,9 @@ public class Scanner {
     private static void initDb(Reflections reflections) {
         Set<Class<?>> annotated = reflections.getTypesAnnotatedWith(Table.class);
         annotated.forEach(DbGenerator::createTable);
+    }
+
+    private static void scannerLog(Reflections reflections){
+//        reflections.
     }
 }

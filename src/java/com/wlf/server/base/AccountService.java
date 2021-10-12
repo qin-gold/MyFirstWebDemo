@@ -1,17 +1,16 @@
-package com.wlf.server;
+package com.wlf.server.base;
 
+import com.wlf.domain.LoginStatus;
 import com.wlf.domain.base.Account;
 import com.wlf.domain.base.dto.UserData;
 import com.wlf.domain.dto.Result;
 
 /**
- * 用户登录的操作接口
- *
  * @author QinShijiao
  * @version 1.0
- * @date 2021-04-27 15:42
+ * @createTime 2021/10/12 18:44
  */
-public interface LoginServer {
+public interface AccountService {
     /**
      * 用户登录的方法
      *

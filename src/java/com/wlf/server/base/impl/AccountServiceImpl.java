@@ -1,24 +1,31 @@
-package com.wlf.server.impl;
+package com.wlf.server.base.impl;
 
 import cn.hutool.crypto.SmUtil;
-import com.wlf.dao.LoginDao;
-import com.wlf.dao.impl.LoginDaoImpl;
+import com.wlf.dao.base.AccountDao;
+import com.wlf.dao.base.LoginStatusDao;
+import com.wlf.dao.base.impl.AccountDaoImpl;
+import com.wlf.dao.base.impl.LoginStatusDaoImpl;
+import com.wlf.dao.base.permission.RoleDao;
+import com.wlf.dao.base.permission.impl.RoleDaoImpl;
 import com.wlf.domain.base.Account;
 import com.wlf.domain.base.dto.UserData;
-import com.wlf.server.LoginServer;
 import com.wlf.domain.dto.Result;
+import com.wlf.server.base.AccountService;
 
 /**
  * @author QinShijiao
  * @version 1.0
- * @date 2021-04-27 15:42
+ * @createTime 2021/10/12 18:50
  */
-public class LoginServerImpl implements LoginServer {
-    private final LoginDao loginDao =new LoginDaoImpl();
+public class AccountServiceImpl implements AccountService {
+    private final AccountDao accountDao = new AccountDaoImpl();
+    private final RoleDao roleDao = new RoleDaoImpl();
+    private final LoginStatusDao loginStatusDao = new LoginStatusDaoImpl();
+
     @Override
     public Result login(Account account) {
         account.setPassword(SmUtil.sm3(account.getPassword()));
-        return loginDao.login(account);
+        return accountDao.login(account);
     }
 
     @Override
@@ -43,6 +50,7 @@ public class LoginServerImpl implements LoginServer {
 
     @Override
     public UserData init(String id) {
+
         return null;
     }
 }

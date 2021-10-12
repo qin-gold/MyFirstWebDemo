@@ -1,17 +1,15 @@
-package com.wlf.server;
+package com.wlf.dao.base;
 
+import com.wlf.domain.LoginStatus;
 import com.wlf.domain.base.Account;
-import com.wlf.domain.base.dto.UserData;
 import com.wlf.domain.dto.Result;
 
 /**
- * 用户登录的操作接口
- *
  * @author QinShijiao
  * @version 1.0
- * @date 2021-04-27 15:42
+ * @createTime 2021/10/12 18:44
  */
-public interface LoginServer {
+public interface AccountDao {
     /**
      * 用户登录的方法
      *
@@ -26,7 +24,7 @@ public interface LoginServer {
      * @param username
      * @return
      */
-    Result checkAccount(String username);
+    boolean checkAccount(String username);
 
     /**
      * 注册账户的方法
@@ -34,7 +32,7 @@ public interface LoginServer {
      * @param account
      * @return
      */
-    Result register(Account account);
+    Result insert(Account account);
 
     /**
      * 更新账户
@@ -47,15 +45,36 @@ public interface LoginServer {
     /**
      * 删除账户
      *
-     * @param id 账户id
+     * @param id
      * @return
      */
     Result delete(String id);
 
-    /** 初始化用户数据
+    /**
+     * 用于判断用户是否已经登录
      *
-     * @param id 用户id
+     * @param username
      * @return
      */
-    UserData init(String id);
+    Result isLogin(String username);
+
+    /**
+     * 记录登录记录日志
+     *
+     * @param loginStatus
+     * @return
+     */
+    void insertLog(LoginStatus loginStatus);
+
+    /**
+     * 登出清除方法
+     *
+     * @param id
+     */
+    void delLoginLog(String id);
+
+    /**
+     * 删除全部日志方法
+     */
+    void delAllLoginLog();
 }

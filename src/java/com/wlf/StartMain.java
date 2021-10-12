@@ -27,6 +27,7 @@ public class StartMain {
     private static final Properties jettyConfig;
     private static final Properties config;
     private static Map<Class<?>, String> map = new HashMap<>();
+    private static final Map<String, Class<?>> staticMap = new HashMap<>();
     private static Set<Class<?>> set = new HashSet<>();
 
     static {
@@ -60,6 +61,7 @@ public class StartMain {
             String url_patton = map.get(aClass);
             log.log(Level.INFO, "加载Servlet------  " + aClass.toString() + " Url_patton--------  " + url_patton);
             appContext.addServlet((Class<? extends Servlet>) aClass, url_patton);
+            staticMap.put(url_patton,aClass);
         }
         map.clear();
         set.clear();
@@ -78,15 +80,17 @@ public class StartMain {
         log.info("加载数据库结束", Level.INFO);
         }
         /***********************************/
-        ServletMapping[] mappings = appContext.getServletHandler().getServletMappings();
-        for (ServletMapping mapping : mappings) {
-            System.out.println(mapping.getServletName());
-            System.out.println(mapping.getPathSpecs().length);
-        }
+//        ServletMapping[] mappings = appContext.getServletHandler().getServletMappings();
+//        for (ServletMapping mapping : mappings) {
+//        }
         server.setHandler(appContext);
         System.out.println("Starting web server on port: " + jettyConfig.getProperty("Port"));
         server.start();
         System.out.println("Starting Complete. Welcome To The Bast World");
         server.join();
+    }
+
+    public static Class<?> getServlet(String url){
+        return staticMap.get(url);
     }
 }

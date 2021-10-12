@@ -1,39 +1,40 @@
-package com.wlf.dao.impl;
+package com.wlf.dao.base.impl;
 
-import com.wlf.dao.LoginDao;
-import com.wlf.domain.base.Account;
+import com.wlf.dao.base.AccountDao;
 import com.wlf.domain.LoginStatus;
+import com.wlf.domain.base.Account;
+import com.wlf.domain.dto.Result;
+import com.wlf.domain.dto.ReturnMsg;
 import com.wlf.msgEnum.CodeEnum;
 import com.wlf.msgEnum.MsgCode;
 import com.wlf.utlis.JDBCUtils;
-import com.wlf.domain.dto.Result;
-import com.wlf.domain.dto.ReturnMsg;
 
 import java.sql.Connection;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-
 /**
- * 登录操作类
- *
- * @author Qin
- * @createDate 2021/4/26 23:03
- * @updateDate 2021/4/26 23:03
+ * @author QinShijiao
+ * @version 1.0
+ * @createTime 2021/10/12 18:50
  */
-public class LoginDaoImpl implements LoginDao {
-
+public class AccountDaoImpl implements AccountDao {
     private final Connection con = JDBCUtils.openConnection();
-
-//    @Override
-//    public Result login(Account account) {
-//        return getResult(account, con);
-//    }
 
     @Override
     public Result login(Account account) {
-        return null;
+        Result result = new Result();
+        String sql = "select id from b_account where username = ? and password = ?";
+        List<Map<String, Object>> list = JDBCUtils.queryForList(con, sql, account.getUsername(), account.getPassword());
+        if (!list.isEmpty()) {
+            result.setCode(CodeEnum.SUCCESS.getStatusValue());
+            result.setMsg(new ReturnMsg(MsgCode.MSG005).getMsg());
+        } else {
+            result.setCode(CodeEnum.FAULT.getStatusValue());
+            result.setMsg(new ReturnMsg(MsgCode.ERR009).getMsg());
+        }
+        return result;
     }
 
     @Override

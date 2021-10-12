@@ -2,6 +2,7 @@ package com.wlf.domain.base;
 
 import com.wlf.annotation.Column;
 import com.wlf.annotation.Table;
+import com.wlf.annotation.TablePk;
 import com.wlf.msgEnum.DbType;
 import lombok.Data;
 
@@ -15,6 +16,7 @@ import java.sql.Timestamp;
 @Data
 @Table("b_login_status")
 public class LoginStatus {
+    @TablePk
     @Column(value = "id", type = DbType.Varchar, length = 64, remark = "id")
     private String id;
     @Column(value = "userId", type = DbType.Varchar, length = 64, remark = "用户id")

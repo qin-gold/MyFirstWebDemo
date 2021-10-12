@@ -20,8 +20,6 @@ import java.util.List;
 public class UserData {
     private String id;
     private User user;
-    private List<Role> roles;
     private List<Menu> menus;
-    private Account account;
     private LoginStatus loginStatus;
 }

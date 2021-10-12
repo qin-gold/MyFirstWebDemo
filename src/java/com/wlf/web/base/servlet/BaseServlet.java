@@ -1,5 +1,6 @@
 package com.wlf.web.base.servlet;
 
+import cn.hutool.aop.aspects.Aspect;
 import com.wlf.web.base.listener.ThymeleafListener;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
@@ -9,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.lang.reflect.Method;
 
 /**
  * 一个模板Servlet
@@ -17,7 +19,7 @@ import java.io.IOException;
  * @version 1.0
  * @date 2021-04-28 15:11
  */
-public class BaseServlet extends HttpServlet {
+public class BaseServlet extends HttpServlet implements Aspect{
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -50,5 +52,20 @@ public class BaseServlet extends HttpServlet {
     protected void engineStart(HttpServletRequest req, HttpServletResponse resp, String path) throws ServletException, IOException {
         TemplateEngine engine = ThymeleafListener.getTemplateEngine(req.getServletContext());
         engine.process(path, new WebContext(req, resp, req.getServletContext()), resp.getWriter());
+    }
+
+    @Override
+    public boolean before(Object target, Method method, Object[] args) {
+        return true;
+    }
+
+    @Override
+    public boolean after(Object target, Method method, Object[] args, Object returnVal) {
+        return true;
+    }
+
+    @Override
+    public boolean afterException(Object target, Method method, Object[] args, Throwable e) {
+        return true;
     }
 }
