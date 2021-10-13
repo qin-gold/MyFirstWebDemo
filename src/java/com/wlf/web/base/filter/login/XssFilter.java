@@ -23,6 +23,7 @@ public class XssFilter extends BaseFilter {
         if (super.withOutFilter(servletRequest)) {
             XssHttpServletRequestWrapper xssRequest = new XssHttpServletRequestWrapper((HttpServletRequest)servletRequest);
             filterChain.doFilter(xssRequest, servletResponse);
+            return;
         }
         filterChain.doFilter(servletRequest, servletResponse);
     }

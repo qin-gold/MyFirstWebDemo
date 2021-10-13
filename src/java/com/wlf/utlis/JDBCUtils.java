@@ -16,6 +16,13 @@ import java.util.*;
  * @createTime 2021/4/27 12:04
  */
 public class JDBCUtils {
+    private static final Properties load ;
+    private static Connection connection ;
+
+    static {
+        load = PropertiesLoadUtils.load("config.properties");
+    }
+
     /**
      * 数据库更新
      *
@@ -40,8 +47,12 @@ public class JDBCUtils {
         return res;
     }
 
+    public static int update( String sql, Object... obj){
+        return update(connection,sql,obj);
+    }
+
     //传入参数变为List数组，这种情况有时候比上面的那个uodate更加好用，因为参数变成动态的了，在程序执行前谁都不知道到底有多少个参数
-    public static int updateList(Connection conn, String sql, List datalist) {
+    public static int updateList(Connection conn, String sql, List<Object> datalist) {
         PreparedStatement ps = null;
         int res;
         try {
@@ -57,6 +68,10 @@ public class JDBCUtils {
             releaseResources(ps);
         }
         return res;
+    }
+
+    public static int updateList( String sql,List<Object> datalist){
+        return updateList(connection,sql,datalist);
     }
 
     /**
@@ -90,6 +105,10 @@ public class JDBCUtils {
         return res;
     }
 
+    public static String queryForString( String sql,Object... obj){
+        return queryForString(connection,sql,obj);
+    }
+
     /**
      * 简单查询语句,返回int值
      *
@@ -99,7 +118,7 @@ public class JDBCUtils {
     public static Integer queryForInt(Connection conn, String sql, Object... obj) {
         PreparedStatement ps = null;
         ResultSet rs = null;
-        Integer res = -1;
+        int res = -1;
         try {
             ps = conn.prepareStatement(sql);
             for (int i = 0; i < obj.length; i++) {
@@ -120,7 +139,11 @@ public class JDBCUtils {
         return res;
     }
 
-    public static Integer queryForIntList(Connection conn, String sql, List datalist) {
+    public static Integer queryForInt( String sql,Object... obj){
+        return queryForInt(connection,sql,obj);
+    }
+
+    public static Integer queryForIntList(Connection conn, String sql, List<Object> datalist) {
         PreparedStatement ps = null;
         ResultSet rs = null;
         Integer res = -1;
@@ -142,6 +165,10 @@ public class JDBCUtils {
             releaseResources(rs);
         }
         return res;
+    }
+
+    public static Integer queryForIntList( String sql,List<Object> datalist){
+        return queryForIntList(connection,sql,datalist);
     }
 
     /**
@@ -173,6 +200,10 @@ public class JDBCUtils {
         return list;
     }
 
+    public static List<Map<String, Object>> queryForList( String sql,Object... obj){
+        return queryForList(connection,sql,obj);
+    }
+
     private static void hasNext(ResultSet rs, List<Map<String, Object>> list, ResultSetMetaData rsmd, int columnCount) throws SQLException {
         Map<String, Object> map;
         while (rs.next()) {
@@ -187,7 +218,7 @@ public class JDBCUtils {
     }
 
     //重载
-    public static List<Map<String, Object>> queryForList_list(Connection conn, String sql, List datalist) {
+    public static List<Map<String, Object>> queryForList_list(Connection conn, String sql, List<Object> datalist) {
         PreparedStatement ps = null;
         ResultSet rs = null;
         List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
@@ -208,6 +239,10 @@ public class JDBCUtils {
             releaseResources(rs);
         }
         return list;
+    }
+
+    public static List<Map<String, Object>> queryForList_list( String sql,List<Object> datalist){
+        return queryForList(connection,sql,datalist);
     }
 
     /*当形参为Object[]数组时，调用该方法必须为一个数组
@@ -243,19 +278,22 @@ public class JDBCUtils {
         return list;
     }
 
+    public static List<Map<String, Object>> queryForListForKeyLower( String sql,Object... obj){
+        return queryForListForKeyLower(connection,sql,obj);
+    }
+
     /**
      * 开启数据库连接,使用druid连接池
      *
      * @author Qin ShiJiao
      * @createTime 2021/4/30 6:07
+     * @updateDate 2021/10/13
+     * 修改通过静态代码块加载
      */
     public static Connection openConnection() {
-        Properties properties = new Properties();
-        InputStream stream = JDBCUtils.class.getClassLoader().getResourceAsStream("config.properties");
         Connection con = null;
         try {
-            properties.load(stream);
-            DataSource dataSource = DruidDataSourceFactory.createDataSource(properties);
+            DataSource dataSource = DruidDataSourceFactory.createDataSource(load);
             con = dataSource.getConnection();
         } catch (Exception e) {
             e.printStackTrace();
@@ -282,6 +320,13 @@ public class JDBCUtils {
                 e.printStackTrace();
             }
         }
+    }
+
+    /**
+     * 初始化connection
+     */
+    public static void initConnection(){
+        connection = openConnection();
     }
 
 }

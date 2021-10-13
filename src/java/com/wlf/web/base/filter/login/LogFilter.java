@@ -10,15 +10,12 @@ import com.wlf.domain.base.User;
 import com.wlf.server.base.LogService;
 import com.wlf.server.base.impl.LogServiceImpl;
 import com.wlf.utlis.CacheUtils;
-import com.wlf.utlis.EqualsUtils;
 import com.wlf.utlis.JwtUtils;
 import com.wlf.web.base.filter.BaseFilter;
-import com.wlf.web.base.listener.LogListener;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.lang.reflect.Method;
 
 /**
  * 日志过滤器

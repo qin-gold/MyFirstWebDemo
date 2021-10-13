@@ -8,7 +8,6 @@ import com.wlf.msgEnum.CodeEnum;
 import com.wlf.msgEnum.MsgCode;
 import com.wlf.utlis.JDBCUtils;
 
-import java.sql.Connection;
 import java.util.Date;
 
 /**
@@ -17,7 +16,6 @@ import java.util.Date;
  * @createTime 2021/10/12 22:32
  */
 public class LogDaoImpl implements LogDao {
-    private final Connection con = JDBCUtils.openConnection();
 
     @Override
     public Result findAllLog(String str) {
@@ -40,7 +38,7 @@ public class LogDaoImpl implements LogDao {
     public Result save(Log log) {
         Result result = new Result();
         String sql = "insert into b_log(id,title,username,userId,realIp,uri,createTime,remark) values (?,?,?,?,?,?,?,?,?,?)";
-        int i = JDBCUtils.update(con, sql, log.getId(), log.getTitle(), log.getUsername(), log.getUserId(), log.getRealIp(), log.getUri(), new Date(), log.getRemark());
+        int i = JDBCUtils.update(sql, log.getId(), log.getTitle(), log.getUsername(), log.getUserId(), log.getRealIp(), log.getUri(), new Date(), log.getRemark());
         if (i == 1) {
             result.setCode(CodeEnum.SUCCESS.getStatusValue());
             result.setMsg(new ReturnMsg(MsgCode.MSG002).getMsg());

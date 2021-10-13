@@ -1,6 +1,5 @@
 package com.wlf.web.base.filter.login;
 
-import cn.hutool.jwt.JWT;
 import com.alibaba.fastjson.JSON;
 import com.wlf.annotation.Filter;
 import com.wlf.domain.dto.Result;

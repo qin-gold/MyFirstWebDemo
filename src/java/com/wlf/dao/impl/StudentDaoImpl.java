@@ -20,14 +20,13 @@ import java.util.Map;
  * @createTime 2021/4/27 0:12
  */
 public class StudentDaoImpl implements StudentDao {
-    private Connection con = JDBCUtils.openConnection();
+//    private Connection con = JDBCUtils.openConnection();
 
     @Override
     public Result findById(String id) {
         Result result = new Result();
-        JDBCUtils.openConnection();
         String sql = "select * from Student where id = ?";
-        List<Map<String, Object>> maps = JDBCUtils.queryForList(con, sql, id);
+        List<Map<String, Object>> maps = JDBCUtils.queryForList(sql, id);
         if (!maps.isEmpty()) {
             result.setCode(CodeEnum.SUCCESS.getStatusZh());
             result.setMsg(new ReturnMsg(MsgCode.MSG001).getMsg());
@@ -43,12 +42,12 @@ public class StudentDaoImpl implements StudentDao {
     @Override
     public Result findAll(int page, int size, String str) {
         Result result = new Result();
-        StringBuffer buffer = new StringBuffer("select * from student ");
+        StringBuilder buffer = new StringBuilder("select * from student ");
         if (!"".equals(str)) {
-            buffer.append("where name like concat('%','" + str + "','%') ");
+            buffer.append("where name like concat('%','").append(str).append("','%') ");
         }
         buffer.append(" order by createTime desc limit ? , ?");
-        List<Map<String, Object>> maps = JDBCUtils.queryForList(con, String.valueOf(buffer), page, size);
+        List<Map<String, Object>> maps = JDBCUtils.queryForList(String.valueOf(buffer), page, size);
         result.setCode(CodeEnum.SUCCESS.getStatusZh());
         result.setMsg(new ReturnMsg(MsgCode.MSG001).getMsg());
         result.setData(maps);
@@ -58,9 +57,8 @@ public class StudentDaoImpl implements StudentDao {
     @Override
     public Result insert(Student student) {
         Result result = new Result();
-        JDBCUtils.openConnection();
         String sql = "insert into student (id,name,age,number,address,createTime,remark) values (?,?,?,?,?,?,?)";
-        List<Map<String, Object>> maps = JDBCUtils.queryForList(con, sql, student.getId(), student.getName(),
+        List<Map<String, Object>> maps = JDBCUtils.queryForList( sql, student.getId(), student.getName(),
                 student.getNumber(), student.getAddress(), student.getCreateTime(), student.getRemark());
         if (!maps.isEmpty()) {
             result.setCode(CodeEnum.SUCCESS.getStatusZh());
@@ -78,7 +76,7 @@ public class StudentDaoImpl implements StudentDao {
     public Result update(Student student) {
         Result result = new Result();
         String sql = "update student set name = ?,age = ?,number =?,address =?,updateTime =? ,remark =? where id = ?";
-        int i = JDBCUtils.update(con, sql, student.getName(), student.getNumber(), student.getAddress(), new Date(),
+        int i = JDBCUtils.update(sql, student.getName(), student.getNumber(), student.getAddress(), new Date(),
                 student.getRemark(), student.getId());
         if (i == 1) {
             result.setCode(CodeEnum.SUCCESS.getStatusZh());
@@ -94,7 +92,7 @@ public class StudentDaoImpl implements StudentDao {
     public Result delete(String id) {
         Result result = new Result();
         String sql = "delete from student where id = ?";
-        int i = JDBCUtils.update(con, sql, id);
+        int i = JDBCUtils.update(sql, id);
         if (i == 1) {
             result.setCode(CodeEnum.SUCCESS.getStatusValue());
             result.setMsg(new ReturnMsg(MsgCode.MSG003).getMsg());

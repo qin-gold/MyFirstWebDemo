@@ -19,6 +19,8 @@ import java.lang.annotation.Target;
 public @interface Column {
     String value();
 
+    String oldValue() default "";
+
     DbType type();
 
     int length() default 32;
