@@ -14,7 +14,7 @@ public class DbGeneratorTest {
     public static void main(String[] args) {
         ReturnMsg msg = new ReturnMsg(MsgCode.ERR001);
         System.out.println(msg);
-        DbGenerator.createTable(User.class);
+//        DbGenerator.createTable(User.class);
     }
     public void TestCreate(){
     }

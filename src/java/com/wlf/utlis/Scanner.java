@@ -27,6 +27,11 @@ public class Scanner {
      * 初始化使用的Map集合
      */
     private static final Map<Class<?>, String> map = new HashMap<>();
+    private static final Properties load;
+
+    static {
+        load =PropertiesLoadUtils.load("config.properties");
+    }
 
     /**
      * 初始化
@@ -111,15 +116,22 @@ public class Scanner {
         return map;
     }
 
+
     /** 初始化数据库表
      * @param reflections 获取的反射对象
      */
     private static void initDb(Reflections reflections) {
         Set<Class<?>> annotated = reflections.getTypesAnnotatedWith(Table.class);
-        annotated.forEach(DbGenerator::createTable);
+        JDBCUtils.initConnection();
+        String generaPackage = (String)load.get("generaPackage");
+        String[] split = generaPackage.split(",");
+        if (split.length!=0){
+            annotated.forEach(item->DbGenerator.initDb(item,split));
+        }else {
+        annotated.forEach(DbGenerator::initDb);
+        }
     }
 
     private static void scannerLog(Reflections reflections){
-//        reflections.
     }
 }
