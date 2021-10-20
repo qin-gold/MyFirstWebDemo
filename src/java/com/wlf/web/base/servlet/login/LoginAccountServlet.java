@@ -8,9 +8,12 @@ import com.wlf.domain.base.dto.UserData;
 import com.wlf.domain.dto.Result;
 import com.wlf.domain.dto.ReturnMsg;
 import com.wlf.server.LoginServer;
+import com.wlf.server.base.AccountService;
+import com.wlf.server.base.impl.AccountServiceImpl;
 import com.wlf.server.impl.LoginServerImpl;
 import com.wlf.utlis.CacheUtils;
 import com.wlf.utlis.Inject;
+import com.wlf.utlis.JwtUtils;
 import com.wlf.web.base.servlet.BaseServlet;
 
 import javax.servlet.ServletException;
@@ -24,12 +27,13 @@ public class LoginAccountServlet extends BaseServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        LoginServer login = new LoginServerImpl();
+
+        AccountService login = new AccountServiceImpl();
         Account account = Inject.getBean(req, Account.class);
         Result result = login.login(account);
         Account data = (Account)result.getData();
         if (data!=null){
-            CacheUtils.setCache(data.getUserId(),new UserData());
+            CacheUtils.setCache(data.getUserId(),new UserData(data.getUserId(),req));
         }
         super.returnJson(req, resp,JSON.toJSONString(new ReturnMsg(result.getCode(),result.getMsg())));
     }

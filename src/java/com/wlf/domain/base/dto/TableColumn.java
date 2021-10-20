@@ -38,11 +38,11 @@ public class TableColumn {
 
         this.Type = column.type().getValue() + "(" + column.length() + ")";
         if (column.type() == DbType.Date || column.type() == DbType.Text || column.type() == DbType.DateTime) this.Type = column.type().getValue();
-
+        if (column.type() == DbType.Int)  this.Type = column.type().getValue()+"(11)";
         this.Key = "";
         if (pk != null) this.Key = pk.isPk() ? "PRI" : "";
 
-        this.Null = column.notNull() ? "YES" : "NO";
+        this.Null = column.notNull() ? "NO" : "YES";
         if ("PRI".equals(this.Key)) this.Null = "NO";
 
         this.oldField = column.oldValue();
@@ -52,14 +52,18 @@ public class TableColumn {
     public boolean equalsColumn(TableColumn column) {
         if (this.Field.equalsIgnoreCase(column.getField())) {
             if (this.Key.equalsIgnoreCase(column.getKey())) {
-                if (!this.Null.equalsIgnoreCase(column.getNull())) {
+                if (this.Null.equalsIgnoreCase(column.getNull())) {
                     if (this.Type.equalsIgnoreCase(column.getType())) {
-                        return this.Comment.equalsIgnoreCase(column.getComment());
+                        return this.Comment.equalsIgnoreCase(column.getComment().replaceAll(" ",""));
                     }
                 }
             }
         }
         return false;
+    }
+
+    public boolean equalsColumnOne(TableColumn column) {
+        return this.Field.equalsIgnoreCase(column.getField());
     }
 
 }

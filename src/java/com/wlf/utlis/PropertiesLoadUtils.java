@@ -40,7 +40,6 @@ public class PropertiesLoadUtils {
      */
     public static Properties load(String fileName) {
         Properties properties = new Properties();
-        String property = null;
         try {
             properties.load(new InputStreamReader(Objects.requireNonNull(PropertiesLoadUtils.class.getClassLoader().getResourceAsStream(fileName))));
         } catch (IOException e) {

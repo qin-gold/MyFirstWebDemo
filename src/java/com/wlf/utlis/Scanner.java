@@ -122,10 +122,9 @@ public class Scanner {
      */
     private static void initDb(Reflections reflections) {
         Set<Class<?>> annotated = reflections.getTypesAnnotatedWith(Table.class);
-        JDBCUtils.initConnection();
         String generaPackage = (String)load.get("generaPackage");
         String[] split = generaPackage.split(",");
-        if (split.length!=0){
+        if (!split[0].equals("")){
             annotated.forEach(item->DbGenerator.initDb(item,split));
         }else {
         annotated.forEach(DbGenerator::initDb);

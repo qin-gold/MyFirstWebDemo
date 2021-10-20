@@ -31,6 +31,7 @@ public class LogFilter extends BaseFilter {
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+        filterChain.doFilter(servletRequest,servletResponse);
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         String uri = request.getRequestURI();
         if (super.withOutFilter(request)){
@@ -49,7 +50,6 @@ public class LogFilter extends BaseFilter {
                 }
             }
         }
-        filterChain.doFilter(servletRequest,servletResponse);
     }
 
 }

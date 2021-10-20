@@ -6,32 +6,12 @@
 </head>
 <body>
 <link href="/static/plugins/bootstrap-3.4.1-dist/css/bootstrap.css" type="text/css">
-<table  class="table col-lg-5">
-  <thead>
-    <tr>
-      <th>id</th>
-      <th>用户名</th>
-      <th>年龄</th>
-      <th>电话号码</th>
-      <th>地址</th>
-      <th>创建时间</th>
-      <th>更新时间</th>
-      <th>备注</th>
-    </tr>
-  </thead>
-  <tbody class="table" >
-  <tr th:each="student:${student}">
-    <td th:text="${student.id}"></td>
-    <td th:text="${student.name}"></td>
-    <td th:text="${student.age}"></td>
-    <td th:text="${student.number}"></td>
-    <td th:text="${student.address}"></td>
-    <td th:text="${student.createTime}"></td>
-    <td th:text="${student.updateTime}"></td>
-    <td th:text="${student.remark}"></td>
-  </tr>
-  </tbody>
-</table>
+<form action="/login" method="post">
+    用户名:<input type="text" name="Account.username">
+    密码:<input type="text" name="Account.password">
+        <input type="submit">
+</form>
+
 <script src="/static/js/jquery-3.6.0.js" type="javascript"></script>
 <script src="/static/plugins/bootstrap-3.4.1-dist/js/bootstrap.js" type="javascript"></script>
 </body>

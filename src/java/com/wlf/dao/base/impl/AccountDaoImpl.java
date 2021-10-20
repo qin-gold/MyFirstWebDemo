@@ -9,7 +9,6 @@ import com.wlf.msgEnum.CodeEnum;
 import com.wlf.msgEnum.MsgCode;
 import com.wlf.utlis.JDBCUtils;
 
-import java.sql.Connection;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -20,7 +19,6 @@ import java.util.Map;
  * @createTime 2021/10/12 18:50
  */
 public class AccountDaoImpl implements AccountDao {
-//    private final Connection con = JDBCUtils.openConnection();
 
     @Override
     public Result login(Account account) {

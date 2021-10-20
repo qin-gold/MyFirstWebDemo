@@ -3,6 +3,7 @@ package com.wlf;
 import cn.hutool.log.Log;
 import cn.hutool.log.LogFactory;
 import cn.hutool.log.level.Level;
+import com.wlf.utlis.JDBCUtils;
 import com.wlf.utlis.PropertiesLoadUtils;
 import com.wlf.utlis.Scanner;
 import org.eclipse.jetty.server.Server;
@@ -61,7 +62,7 @@ public class StartMain {
             String url_patton = map.get(aClass);
             log.log(Level.INFO, "加载Servlet------  " + aClass.toString() + " Url_patton--------  " + url_patton);
             appContext.addServlet((Class<? extends Servlet>) aClass, url_patton);
-            staticMap.put(url_patton,aClass);
+            staticMap.put(url_patton, aClass);
         }
         map.clear();
         set.clear();
@@ -74,10 +75,11 @@ public class StartMain {
             appContext.addEventListener(servletContextListener);
         }
         log.info("加载Web结束", Level.INFO);
-        if (Boolean.parseBoolean(config.getProperty("GeneraMode"))){
-        log.info("加载数据库开始", Level.INFO);
-        Scanner.init(jettyConfig.getProperty("ScannerModel"), com.wlf.annotation.Table.class);
-        log.info("加载数据库结束", Level.INFO);
+        if (Boolean.parseBoolean(config.getProperty("GeneraMode"))) {
+            log.info("加载数据库开始", Level.INFO);
+            JDBCUtils.initConnection();
+            Scanner.init(jettyConfig.getProperty("ScannerModel"), com.wlf.annotation.Table.class);
+            log.info("加载数据库结束", Level.INFO);
         }
         /***********************************/
 //        ServletMapping[] mappings = appContext.getServletHandler().getServletMappings();
@@ -90,7 +92,7 @@ public class StartMain {
         server.join();
     }
 
-    public static Class<?> getServlet(String url){
+    public static Class<?> getServlet(String url) {
         return staticMap.get(url);
     }
 }

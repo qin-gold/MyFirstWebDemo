@@ -12,6 +12,8 @@ import com.wlf.msgEnum.DbType;
 
 import java.lang.reflect.Field;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * 读取注解初始化数据库
@@ -23,9 +25,10 @@ import java.util.*;
 public class DbGenerator {
     private static final Log log = LogFactory.get();
     private static final Properties load;
-    private static final Set<TableColumn> newColumn = new HashSet<>();
-    private static final Set<TableColumn> oldColumn = new HashSet<>();
-    private static final Set<TableColumn> findColumn = new HashSet<>();
+    private static  Set<TableColumn> temp = new HashSet<>();
+    private static  Set<TableColumn> newColumn = new HashSet<>();
+    private static  Set<TableColumn> oldColumn = new HashSet<>();
+    private static  Set<TableColumn> findColumn = new HashSet<>();
 
     static {
         load = PropertiesLoadUtils.load("config.properties");
@@ -134,22 +137,35 @@ public class DbGenerator {
 
     private static void updateTableField(String tableName, Class<?> classes) {
         initTableData(tableName, classes);
+        Set<TableColumn> temp2 = new HashSet<>(findColumn);
         findColumn.forEach(findItem -> {
-            oldColumn.forEach(oldItem -> {
-                if (oldItem.equalsColumn(findItem)) {
-                    oldColumn.remove(oldItem);
-                    findColumn.remove(findItem);
-                }
-            });
-            newColumn.forEach(newItem -> {
-                if (newItem.equalsColumn(findItem)) {
-                    newColumn.remove(newItem);
-                    findColumn.remove(findItem);
-                }
-            });
+            temp = temp.stream()
+                    .filter(item->!item.equalsColumnOne(findItem))
+                    .collect(Collectors.toSet());
+            oldColumn = Stream.concat(oldColumn.stream(),temp.stream())
+                    .filter(item->{
+                        if (!item.equalsColumn(findItem)) {
+                            return true;
+                        }
+                        temp2.remove(findItem);
+                        return false;
+                    })
+                    .collect(Collectors.toSet());
+            newColumn = newColumn.stream()
+                    .filter(item->!temp.contains(item))
+                    .filter(item->!item.equalsColumn(findItem))
+                    .collect(Collectors.toSet());
         });
+        findColumn=temp2;
+        if (oldColumn.size()>0)
         tableUpdateColumn(tableName);
+        if (newColumn.size()>0)
         tableInsertColumn(tableName);
+
+        temp2.clear();
+        findColumn.clear();
+        newColumn.clear();
+        oldColumn.clear();
     }
 
     /**
@@ -166,6 +182,7 @@ public class DbGenerator {
                 if (StrUtil.isNotBlank(column.oldValue())) {
                     oldColumn.add(new TableColumn(column, tablePk));
                 } else {
+                    temp.add(new TableColumn(column, tablePk));
                     newColumn.add(new TableColumn(column, tablePk));
                 }
             }

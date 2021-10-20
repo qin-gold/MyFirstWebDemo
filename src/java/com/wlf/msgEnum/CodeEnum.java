@@ -12,7 +12,7 @@ public enum CodeEnum {
     //错误状态
     FAULT("500","错误"),
     //错误状态
-    FORBIDDEN("500","权限不足"),
+    FORBIDDEN("403","权限不足"),
     //错误状态
     UNAUTHORIZED("401","未授权"),
     //异常状态

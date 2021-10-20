@@ -28,8 +28,6 @@ public class StartListener extends BaseListener {
         Properties load = PropertiesLoadUtils.load("config.properties");
         log.info("加载配置文件", Level.INFO);
         context.setAttribute("config",load);
-        log.info("加载数据库", Level.INFO);
-        JDBCUtils.initConnection();
     }
 
     @Override

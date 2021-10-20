@@ -14,8 +14,8 @@ import java.sql.Timestamp;
  * @createTime 2021/10/11 18:05
  */
 @Data
-@Table("b_menu_resources")
-public class Menu_resources {
+@Table("b_menu_authority")
+public class Menu_authority {
     @TablePk
     @Column(value = "id", type = DbType.Varchar, length = 64, remark = "id")
     private String id;
