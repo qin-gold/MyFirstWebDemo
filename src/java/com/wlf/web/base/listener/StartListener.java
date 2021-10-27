@@ -3,11 +3,11 @@ package com.wlf.web.base.listener;
 import cn.hutool.log.Log;
 import cn.hutool.log.LogFactory;
 import cn.hutool.log.level.Level;
-import com.mysql.cj.util.LogUtils;
-import com.wlf.StartMain;
 import com.wlf.annotation.Listener;
+import com.wlf.annotation.Table;
 import com.wlf.utlis.JDBCUtils;
 import com.wlf.utlis.PropertiesLoadUtils;
+import com.wlf.utlis.Scanner;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
@@ -24,6 +24,8 @@ public class StartListener extends BaseListener {
 
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
+        JDBCUtils.initConnection();
+        Scanner.init("com.wlf.domain",Table.class);
         ServletContext context = servletContextEvent.getServletContext();
         Properties load = PropertiesLoadUtils.load("config.properties");
         log.info("加载配置文件", Level.INFO);

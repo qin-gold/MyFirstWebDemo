@@ -326,8 +326,8 @@ public class JDBCUtils {
      * 初始化connection
      */
     public static void initConnection(){
+        if (connection==null)
         connection = openConnection();
     }
-
 }
 

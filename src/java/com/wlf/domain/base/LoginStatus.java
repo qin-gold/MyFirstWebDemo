@@ -1,5 +1,6 @@
 package com.wlf.domain.base;
 
+import cn.hutool.core.lang.UUID;
 import com.wlf.annotation.Column;
 import com.wlf.annotation.Table;
 import com.wlf.annotation.TablePk;
@@ -33,4 +34,14 @@ public class LoginStatus {
     private Timestamp loginTime;
     @Column(value = "remark", type = DbType.Text, remark = "备注")
     private String remark;
+
+    public LoginStatus(String userId, String username, String realIp, String token, int loginErrCount, String remark) {
+        this.id = UUID.fastUUID().toString();
+        this.userId = userId;
+        this.username = username;
+        this.realIp = realIp;
+        this.token = token;
+        this.loginErrCount = loginErrCount;
+        this.remark = remark;
+    }
 }

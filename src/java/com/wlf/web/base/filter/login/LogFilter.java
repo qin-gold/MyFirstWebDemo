@@ -11,6 +11,7 @@ import com.wlf.server.base.LogService;
 import com.wlf.server.base.impl.LogServiceImpl;
 import com.wlf.utlis.CacheUtils;
 import com.wlf.utlis.JwtUtils;
+import com.wlf.web.base.config.ServletConfig;
 import com.wlf.web.base.filter.BaseFilter;
 
 import javax.servlet.*;
@@ -35,7 +36,7 @@ public class LogFilter extends BaseFilter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         String uri = request.getRequestURI();
         if (super.withOutFilter(request)){
-            Class<?> aClass = StartMain.getServlet(uri);
+            Class<?> aClass = ServletConfig.getServlet(uri);
             if (aClass != null) {
                 String id = JwtUtils.getValue(request);
                 com.wlf.annotation.Log log = aClass.getAnnotation(com.wlf.annotation.Log.class);
