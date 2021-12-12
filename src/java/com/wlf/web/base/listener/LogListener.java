@@ -1,16 +1,15 @@
 package com.wlf.web.base.listener;
 
 
-import com.wlf.annotation.Listener;
-
 import javax.servlet.ServletRequestEvent;
+import javax.servlet.annotation.WebListener;
 
 /**
  * @author QinShijiao
  * @version 1.0
  * @createTime 2021/10/12 18:08
  */
-@Listener
+@WebListener
 public class LogListener extends BaseListener {
     @Override
     public void requestInitialized(ServletRequestEvent sre) {

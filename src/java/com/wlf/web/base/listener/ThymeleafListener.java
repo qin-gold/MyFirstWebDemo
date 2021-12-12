@@ -1,12 +1,12 @@
 package com.wlf.web.base.listener;
 
-import com.wlf.annotation.Listener;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
+import javax.servlet.annotation.WebListener;
 
 /**
  * 初始化thymeleaf
@@ -15,7 +15,7 @@ import javax.servlet.ServletContextEvent;
  * @version 1.0
  * @createTime 2021/10/9 0:03
  */
-@Listener
+@WebListener
 public class ThymeleafListener extends BaseListener {
     private static final String TEMPLATE_ENGINE_INST = "TemplateEngine";
 

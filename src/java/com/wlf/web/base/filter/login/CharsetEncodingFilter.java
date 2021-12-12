@@ -7,6 +7,7 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.annotation.WebFilter;
 import java.io.IOException;
 
 /**
@@ -14,7 +15,8 @@ import java.io.IOException;
  * @version 1.0
  * @createTime 2021/10/11 21:42
  */
-@Filter(urlPatton = "/*")
+//@Filter(urlPatton = "/*")
+@WebFilter("/")
 public class CharsetEncodingFilter extends BaseFilter {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
