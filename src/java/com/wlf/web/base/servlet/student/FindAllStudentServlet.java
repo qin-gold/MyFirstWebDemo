@@ -29,6 +29,6 @@ public class FindAllStudentServlet extends BaseServlet {
         QueryConditions bean = Inject.getBean(req, QueryConditions.class);
         Result all = server.findAll(bean);
         req.setAttribute("student", all.getData());
-        super.engineStart(req, resp, "user/login");
+        super.thyRender(req, resp, "user/login");
     }
 }

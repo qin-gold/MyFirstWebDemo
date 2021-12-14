@@ -1,6 +1,7 @@
 package com.wlf.utlis;
 
 import com.alibaba.druid.pool.DruidDataSourceFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.sql.DataSource;
 import java.io.InputStream;
@@ -15,6 +16,7 @@ import java.util.*;
  * @version 1.0
  * @createTime 2021/4/27 12:04
  */
+@Slf4j
 public class JDBCUtils {
     private static final Properties load ;
     private static Connection connection ;
@@ -328,6 +330,7 @@ public class JDBCUtils {
     public static void initConnection(){
         if (connection==null)
         connection = openConnection();
+        log.info("init DB");
     }
 }
 
