@@ -14,7 +14,6 @@ import java.io.IOException;
  * @version 1.0
  * @createTime 2021/10/11 21:39
  */
-//@Filter(urlPatton = "/*")
 @WebFilter("/*")
 public class SessionFilter extends BaseFilter {
     @Override

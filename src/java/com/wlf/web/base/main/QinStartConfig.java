@@ -1,6 +1,8 @@
 package com.wlf.web.base.main;
 
 
+import javax.servlet.ServletContext;
+
 /**
  * @author QinShijiao
  * @version 1.0
@@ -8,12 +10,10 @@ package com.wlf.web.base.main;
  */
 public abstract class QinStartConfig {
 
-    public abstract void confRoute();
-
     public void afterStart(){};
 
     public void beforeStop(){};
 
-    public void initOther(){};
+    public void initOther(ServletContext servletContext){};
 
 }

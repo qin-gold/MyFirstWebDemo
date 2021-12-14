@@ -4,19 +4,14 @@ import cn.hutool.core.lang.UUID;
 import cn.hutool.log.Log;
 import cn.hutool.log.LogFactory;
 import cn.hutool.log.level.Level;
-import com.wlf.StartMain;
 import com.wlf.domain.base.User;
 import com.wlf.server.base.LogService;
 import com.wlf.server.base.impl.LogServiceImpl;
 import com.wlf.utlis.CacheUtils;
 import com.wlf.utlis.JwtUtils;
-import com.wlf.web.base.config.ServletConfig;
 import com.wlf.web.base.filter.BaseFilter;
 
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
+import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -40,22 +35,22 @@ public class LogFilter extends BaseFilter {
         filterChain.doFilter(servletRequest, servletResponse);
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         String uri = request.getRequestURI();
-        if (super.withOutFilter(request)) {
-            Class<?> aClass = ServletConfig.getServlet(uri);
-            if (aClass != null) {
-                String id = JwtUtils.getValue(request);
-                com.wlf.annotation.Log log = aClass.getAnnotation(com.wlf.annotation.Log.class);
-                if (log != null) {
-                    String remark = log.remark();
-                    String ip = request.getRemoteAddr();
-                    if (id != null) {
-                        User user = CacheUtils.getUser(id);
-                        logService.save(new com.wlf.domain.base.Log(UUID.fastUUID().toString(), remark, user.getId(), user.getName(), ip, uri, null, log.remark()));
-                        LogFilter.log.info("[+" + log.title() + "+]", Level.INFO);
-                    }
-                }
-            }
-        }
+//        if (super.withOutFilter(request)) {
+//            Class<?> aClass = ServletConfig.getServlet(uri);
+//            if (aClass != null) {
+//                String id = JwtUtils.getValue(request);
+//                com.wlf.annotation.Log log = aClass.getAnnotation(com.wlf.annotation.Log.class);
+//                if (log != null) {
+//                    String remark = log.remark();
+//                    String ip = request.getRemoteAddr();
+//                    if (id != null) {
+//                        User user = CacheUtils.getUser(id);
+//                        logService.save(new com.wlf.domain.base.Log(UUID.fastUUID().toString(), remark, user.getId(), user.getName(), ip, uri, null, log.remark()));
+//                        LogFilter.log.info("[+" + log.title() + "+]", Level.INFO);
+//                    }
+//                }
+//            }
+//        }
     }
 
 }

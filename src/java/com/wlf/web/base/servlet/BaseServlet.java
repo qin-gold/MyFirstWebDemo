@@ -1,7 +1,7 @@
 package com.wlf.web.base.servlet;
 
 import cn.hutool.aop.aspects.Aspect;
-import com.wlf.web.base.listener.ThymeleafListener;
+import com.wlf.web.base.plugin.ThymeleafExt;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 
@@ -49,9 +49,13 @@ public class BaseServlet extends HttpServlet implements Aspect{
         this.post(req, resp);
     }
 
-    protected void engineStart(HttpServletRequest req, HttpServletResponse resp, String path) throws ServletException, IOException {
-        TemplateEngine engine = ThymeleafListener.getTemplateEngine(req.getServletContext());
-        engine.process(path, new WebContext(req, resp, req.getServletContext()), resp.getWriter());
+    protected void thyRender(HttpServletRequest req, HttpServletResponse resp, String path)throws IOException {
+        TemplateEngine engine = ThymeleafExt.getTemplateEngine(req.getServletContext());
+        if (engine!=null){
+            engine.process(path, new WebContext(req, resp, req.getServletContext()), resp.getWriter());
+            return;
+        }
+        throw new RuntimeException("Thymeleaf template engine is not configured");
     }
 
     @Override

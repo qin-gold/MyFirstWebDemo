@@ -23,7 +23,6 @@ import java.util.Properties;
 
 
 @WebFilter("/*")
-//@Filter(urlPatton = "/*")
 public class LoginFilter extends BaseFilter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws IOException, ServletException {

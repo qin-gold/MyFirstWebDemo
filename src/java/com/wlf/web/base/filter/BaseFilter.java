@@ -9,11 +9,13 @@ import java.io.IOException;
 
 /**
  * 基础Filter 继承了一个简易AOP
+ *
  * @author QinShijiao
  * @version 1.0
  * @createTime 2021/10/8 12:33
  */
-public class BaseFilter extends SimpleAspect implements Filter   {
+public class BaseFilter extends SimpleAspect implements Filter {
+
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
 
@@ -21,7 +23,7 @@ public class BaseFilter extends SimpleAspect implements Filter   {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws IOException, ServletException {
-
+        filterChain.doFilter(request, response);
     }
 
 
@@ -30,12 +32,16 @@ public class BaseFilter extends SimpleAspect implements Filter   {
 
     }
 
-    /** 静态文件跳过过滤
+    /**
+     * 静态文件跳过过滤
+     *
      * @param request ServletRequest
      * @return boolean
      */
-    public boolean withOutFilter(ServletRequest request){
-        HttpServletRequest servletRequest = (HttpServletRequest)request;
+    public boolean withOutFilter(ServletRequest request) {
+        HttpServletRequest servletRequest = (HttpServletRequest) request;
         return !EqualsUtils.equalsAll(servletRequest.getRequestURI());
     }
+
+
 }

@@ -1,6 +1,5 @@
 package com.wlf.web.base.filter.login;
 
-import com.wlf.annotation.Filter;
 import com.wlf.web.base.filter.BaseFilter;
 
 import javax.servlet.FilterChain;
@@ -15,7 +14,6 @@ import java.io.IOException;
  * @version 1.0
  * @createTime 2021/10/11 21:42
  */
-//@Filter(urlPatton = "/*")
 @WebFilter("/")
 public class CharsetEncodingFilter extends BaseFilter {
     @Override

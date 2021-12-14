@@ -1,10 +1,11 @@
 package com.wlf.web.base.main;
 
-import com.wlf.web.base.config.FilterConfig;
-import com.wlf.web.base.config.ListenerConfig;
-import com.wlf.web.base.config.ServletConfig;
+import lombok.extern.slf4j.Slf4j;
+import org.eclipse.jetty.annotations.AnnotationConfiguration;
+import org.eclipse.jetty.plus.webapp.EnvConfiguration;
+import org.eclipse.jetty.plus.webapp.PlusConfiguration;
 import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.webapp.WebAppContext;
+import org.eclipse.jetty.webapp.*;
 
 
 /**
@@ -12,25 +13,20 @@ import org.eclipse.jetty.webapp.WebAppContext;
  * @version 1.0
  * @createTime 2021/10/22 12:56
  */
+@Slf4j
 public class Start implements StartConfig {
     private Server server;
     private WebAppContext webAppContext;
     private Integer port;
     private String context;
     private String viewPath;
-    private ServletConfig servletConfig;
-    private FilterConfig filterConfig;
-    private ListenerConfig listenerConfig;
 
     private static final Start start = new Start();
 
-    public Start(Integer port, String context, String viewPath, ServletConfig servletConfig, FilterConfig filterConfig, ListenerConfig listenerConfig) {
+    public Start(Integer port, String context, String viewPath ) {
         this.port = port;
         this.context = context;
         this.viewPath = viewPath;
-        this.servletConfig = servletConfig;
-        this.filterConfig = filterConfig;
-        this.listenerConfig = listenerConfig;
     }
 
     private Start() {
@@ -41,30 +37,35 @@ public class Start implements StartConfig {
         server = new Server(port);
         webAppContext = new WebAppContext();
         webAppContext.setThrowUnavailableOnStartupException(true);
+        webAppContext.setParentLoaderPriority(true);
+        webAppContext.setConfigurationDiscovered(true);
         webAppContext.setContextPath(context);
         webAppContext.setResourceBase(viewPath);
+        webAppContext.setConfigurations(new Configuration[]{
+                new AnnotationConfiguration(),
+                new WebInfConfiguration(),
+                new WebXmlConfiguration(),
+                new MetaInfConfiguration(),
+                new FragmentConfiguration(),
+                new EnvConfiguration(),
+                new PlusConfiguration(),
+                new JettyWebXmlConfiguration()
+        });
         server.setHandler(webAppContext);
     }
 
 
-    public void initWeb() {
-        servletConfig.config(webAppContext);
-        filterConfig.config(webAppContext);
-        listenerConfig.config(webAppContext);
-    }
-
     @Override
     public void start() {
         initContext();
-        initWeb();
         try {
             server.start();
+            log.info("Starting web server on port:{}",port);
+            log.info("Starting Complete. Welcome To The Qin World");
             server.join();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.println("Starting web server on port: " + port);
-        System.out.println("Starting Complete. Welcome To The Qin World");
     }
 
     @Override
@@ -74,6 +75,6 @@ public class Start implements StartConfig {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.println("^v^ ^v^ ^v^ ^v^ ^v^");
+        log.info("^v^ ^v^ ^v^ ^v^ ^v^");
     }
 }
