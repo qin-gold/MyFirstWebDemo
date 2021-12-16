@@ -19,7 +19,10 @@ public class EqualsUtils {
         String property = load.getProperty("fileType");
         String[] split = property.split("\\|");
         for (String st : split) {
-            if (equals == substring.equals(st))break;
+            if (substring.equals(st)) {
+                equals = true;
+                break;
+            }
         }
         return equals;
     }

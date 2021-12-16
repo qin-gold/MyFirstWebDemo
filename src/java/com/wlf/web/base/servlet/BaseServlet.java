@@ -1,16 +1,24 @@
 package com.wlf.web.base.servlet;
 
 import cn.hutool.aop.aspects.Aspect;
+import com.wlf.utlis.EqualsUtils;
+import com.wlf.utlis.Scanner;
 import com.wlf.web.base.plugin.ThymeleafExt;
+import lombok.extern.slf4j.Slf4j;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 
 import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Map;
 
 /**
  * 一个模板Servlet
@@ -19,7 +27,35 @@ import java.lang.reflect.Method;
  * @version 1.0
  * @date 2021-04-28 15:11
  */
+@Slf4j
 public class BaseServlet extends HttpServlet implements Aspect{
+
+    private final Map<String, Class<?>> map = Scanner.getClasses();
+
+    @Override
+    public void service(ServletRequest req, ServletResponse res) throws ServletException, IOException {
+        HttpServletRequest request =(HttpServletRequest)req;
+        HttpServletResponse response =(HttpServletResponse)res;
+        String uri = request.getRequestURI();
+        if ("/".equals(uri) || EqualsUtils.equalsAll(uri)) {
+            return;
+        }
+        String substring = uri.substring(0, uri.indexOf("/", 1));
+        if (map.containsKey(substring)) {
+            Class<?> aClass = map.get(substring);
+            try {
+                Object instance = aClass.getConstructor(HttpServletRequest.class, HttpServletResponse.class).newInstance(request, response);
+                String sub = uri.substring(uri.indexOf("/", 1)+1);
+                aClass.getMethod(sub).invoke(instance);
+            } catch ( IllegalAccessException | InvocationTargetException | InstantiationException e) {
+                e.printStackTrace();
+            }catch (NoSuchMethodException e){
+                log.error("NoSuchMethod");
+                throw new RuntimeException("NoSuchMethod");
+            }
+        }
+//        super.service(req, res);
+    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

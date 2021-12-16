@@ -30,7 +30,7 @@ public class UserData {
     public UserData(String id, HttpServletRequest request) {
         this.id = id;
         this.user=(User) service.findById(id).getData();
-        this.loginStatus = new LoginStatus(id,user.getName(),request.getRemoteAddr(), JwtUtils.create(id),0,"");
+//        this.loginStatus = new LoginStatus(id,user.getName(),request.getRemoteAddr(), JwtUtils.create(id),0,"");
 //        this.menus =
     }
 }

@@ -6,7 +6,6 @@ import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 import javax.servlet.ServletContext;
-import javax.servlet.ServletContextEvent;
 import java.util.Properties;
 
 /**
@@ -17,7 +16,7 @@ import java.util.Properties;
 public class ThymeleafExt {
 
     private static final String TEMPLATE_ENGINE_INST = "TemplateEngine";
-    private static Properties pro;
+    private static final Properties pro;
 
     static {
         pro = PropertiesLoadUtils.load("jettyConfig.properties");

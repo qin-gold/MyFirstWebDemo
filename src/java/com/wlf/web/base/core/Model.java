@@ -1,5 +1,7 @@
 package com.wlf.web.base.core;
 
+import com.wlf.web.base.servlet.BaseServlet;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -11,22 +13,28 @@ import javax.servlet.http.HttpSession;
  * @version 1.0
  * @createTime 2021/10/21 13:45
  */
-public abstract class Controller {
+public class Model extends BaseServlet {
     private HttpServletRequest request;
     private HttpServletResponse response;
-    private String urlPara;
 
-    void init(HttpServletRequest request,HttpServletResponse response,String urlPara){
+    public Model(HttpServletRequest request, HttpServletResponse response){
         this.request = request;
         this.response = response;
-        this.urlPara = urlPara;
+    }
+
+    public HttpServletRequest getRequest() {
+        return request;
+    }
+
+    public HttpServletResponse getResponse() {
+        return response;
     }
 
     public HttpSession getSession() {
         return request.getSession();
     }
 
-    public Controller setSessionAttr(String name, Object value) {
+    public Model setSessionAttr(String name, Object value) {
         request.getSession().setAttribute(name, value);
         return this;
     }
@@ -35,7 +43,7 @@ public abstract class Controller {
         return request.getSession().getAttribute(name);
     }
 
-    public Controller setAttr(String name, Object value) {
+    public Model setAttr(String name, Object value) {
         request.setAttribute(name, value);
         return this;
     }
@@ -48,12 +56,10 @@ public abstract class Controller {
         return (int) getAttr(name);
     }
 
-    public String getUrlPara(String name) {
-        return urlPara;
-    }
-
     public Object getAttr(String name) {
         return request.getAttribute(name);
     }
+
+    public String getStringPara(String name){return request.getParameter(name);}
 
 }

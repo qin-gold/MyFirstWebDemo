@@ -12,5 +12,4 @@ public class Action {
     private String actionKey;
     private Class<? extends BaseServlet> controller;
 
-
 }

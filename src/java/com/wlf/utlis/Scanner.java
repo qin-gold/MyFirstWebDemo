@@ -1,16 +1,15 @@
 package com.wlf.utlis;
 
-import com.wlf.annotation.*;
-import com.wlf.web.base.filter.BaseFilter;
-import com.wlf.web.base.listener.BaseListener;
-import com.wlf.web.base.servlet.BaseServlet;
+import com.wlf.web.base.annotation.Controller;
+import com.wlf.annotation.Log;
+import com.wlf.annotation.Table;
 import org.reflections.Reflections;
 
 import java.lang.annotation.Annotation;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 注解扫描器
@@ -26,11 +25,11 @@ public class Scanner {
     /**
      * 初始化使用的Map集合
      */
-    private static final Map<Class<?>, String> map = new HashMap<>();
     private static final Properties load;
+    private static final Map<String,Class<?>> map = new ConcurrentHashMap<>();
 
     static {
-        load =PropertiesLoadUtils.load("config.properties");
+        load = PropertiesLoadUtils.load("config.properties");
     }
 
     /**
@@ -40,97 +39,44 @@ public class Scanner {
      * @param ano         传入的注解
      * @return
      */
-    public static Map<Class<?>, String> init(String packageName, Class<? extends Annotation> ano) {
+    public static void init(String packageName, Class<? extends Annotation> ano) {
         Reflections reflection = new Reflections(packageName);
-        if (ano.equals(Servlet.class)) return initServlet(reflection);
-        if (ano.equals(Filter.class)) return initFilter(reflection);
-        if (ano.equals(Listener.class)) return initListener(reflection);
-        if (ano.equals(Table.class)) {
-            initDb(reflection);
-            return null;
-        }
+        if (ano.equals(Table.class)) initDb(reflection);
+        if (ano.equals(Controller.class)) initController(reflection);
         if (ano.equals(Log.class)) scannerLog(reflection);
-        throw new RuntimeException("未找到对应的注解");
+//        throw new RuntimeException("未找到对应的注解");
     }
 
     /**
-     * 初始化Servlet
+     * 初始化数据库表
      *
-     * @param reflections 获取的反射对象
-     * @return
-     */
-    private static Map<Class<?>, String> initServlet(Reflections reflections) {
-        Set<Class<?>> annotated = reflections.getTypesAnnotatedWith(Servlet.class);
-        annotated.forEach(data -> {
-            try {
-                Class<?> superclass = data.getSuperclass();
-                if (superclass.equals(BaseServlet.class)) {
-                    Servlet annotations = data.getAnnotation(Servlet.class);
-                    map.put(data, annotations.mapping());
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
-        return map;
-    }
-
-    /**
-     * 初始化Filter
-     *
-     * @param reflections 获取的反射对象
-     * @return
-     */
-    private static Map<Class<?>, String> initFilter(Reflections reflections) {
-        Set<Class<?>> annotated = reflections.getTypesAnnotatedWith(Filter.class);
-        annotated.forEach(data -> {
-            try {
-                Class<?> superclass = data.getSuperclass();
-                if (superclass.equals(BaseFilter.class)) {
-                    Filter annotations = data.getAnnotation(Filter.class);
-                    map.put(data, annotations.urlPatton());
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
-        return map;
-    }
-
-    /**
-     * 初始化Listener
-     *
-     * @param reflections 获取的反射对象
-     * @return
-     */
-    private static Map<Class<?>, String> initListener(Reflections reflections) {
-        Set<Class<?>> annotated = reflections.getTypesAnnotatedWith(Listener.class);
-        annotated.forEach(data -> {
-            try {
-                Class<?> superclass = data.getSuperclass();
-                if (superclass.equals(BaseListener.class)) map.put(data, null);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
-        return map;
-    }
-
-
-    /** 初始化数据库表
      * @param reflections 获取的反射对象
      */
     private static void initDb(Reflections reflections) {
         Set<Class<?>> annotated = reflections.getTypesAnnotatedWith(Table.class);
-        String generaPackage = (String)load.get("generaPackage");
+        if (!Boolean.parseBoolean(load.getProperty("dev"))){
+            return;
+        }
+        String generaPackage = (String) load.get("generaPackage");
         String[] split = generaPackage.split(",");
-        if (!split[0].equals("")){
-            annotated.forEach(item->DbGenerator.initDb(item,split));
-        }else {
-        annotated.forEach(DbGenerator::initDb);
+        if (!split[0].equals("")) {
+            annotated.forEach(item -> DbGenerator.initDb(item, split));
+        } else {
+            annotated.forEach(DbGenerator::initDb);
         }
     }
 
-    private static void scannerLog(Reflections reflections){
+    private static void initController(Reflections reflections) {
+        Set<Class<?>> classes = reflections.getTypesAnnotatedWith(Controller.class);
+        classes.forEach(item->{
+            map.put(item.getAnnotation(Controller.class).value(),item);
+        });
+    }
+
+    private static void scannerLog(Reflections reflections) {
+    }
+
+    public static Map<String,Class<?>> getClasses() {
+        return map;
     }
 }
