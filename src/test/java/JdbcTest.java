@@ -1,4 +1,4 @@
-import com.wlf.utlis.JDBCUtils;
+import com.wlf.core.utlis.JDBCUtils;
 
 import java.util.ArrayList;
 import java.util.List;

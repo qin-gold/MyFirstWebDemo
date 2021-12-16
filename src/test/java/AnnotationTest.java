@@ -1,5 +1,5 @@
-import com.wlf.annotation.Log;
-import com.wlf.web.base.servlet.login.LoginAccountServlet;
+import com.wlf.core.annotation.Log;
+import com.wlf.core.web.base.servlet.login.LoginAccountServlet;
 
 /**
  * @author QinShijiao

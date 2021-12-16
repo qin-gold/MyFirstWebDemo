@@ -1,6 +1,6 @@
-import com.wlf.dao.StudentDao;
-import com.wlf.dao.impl.StudentDaoImpl;
-import com.wlf.domain.dto.Result;
+import com.wlf.core.dao.StudentDao;
+import com.wlf.core.dao.impl.StudentDaoImpl;
+import com.wlf.core.domain.dto.Result;
 
 /**
  * @author Qin

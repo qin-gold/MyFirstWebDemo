@@ -1,4 +1,4 @@
-import com.wlf.utlis.DataKitUtils;
+import com.wlf.core.utlis.DataKitUtils;
 import org.junit.Test;
 
 /**

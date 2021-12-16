@@ -1,12 +1,12 @@
 package com.wlf;
 
-import com.wlf.annotation.Table;
-import com.wlf.utlis.JDBCUtils;
-import com.wlf.utlis.PropertiesLoadUtils;
-import com.wlf.utlis.Scanner;
-import com.wlf.web.base.main.QinStart;
-import com.wlf.web.base.main.QinStartConfig;
-import com.wlf.web.base.plugin.ThymeleafExt;
+import com.wlf.core.annotation.Table;
+import com.wlf.core.utlis.JDBCUtils;
+import com.wlf.core.utlis.PropertiesLoadUtils;
+import com.wlf.core.utlis.Scanner;
+import com.wlf.core.web.base.main.QinStart;
+import com.wlf.core.web.base.main.QinStartConfig;
+import com.wlf.core.web.base.plugin.ThymeleafExt;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.ServletContext;

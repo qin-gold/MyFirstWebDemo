@@ -1,8 +1,5 @@
-import com.wlf.domain.base.User;
-import com.wlf.domain.dto.ReturnMsg;
-import com.wlf.msgEnum.MsgCode;
-import com.wlf.utlis.DbGenerator;
-import org.junit.Test;
+import com.wlf.core.domain.dto.ReturnMsg;
+import com.wlf.core.enums.MsgCode;
 
 /**
  * @author QinShijiao

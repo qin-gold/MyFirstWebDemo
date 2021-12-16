@@ -1,4 +1,4 @@
-import com.wlf.utlis.EqualsUtils;
+import com.wlf.core.utlis.EqualsUtils;
 
 /**
  * @author QinShijiao

@@ -1,4 +1,4 @@
-import com.wlf.utlis.JwtUtils;
+import com.wlf.core.utlis.JwtUtils;
 
 /**
  * @author QinShijiao
