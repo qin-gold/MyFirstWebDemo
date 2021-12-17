@@ -1,5 +1,5 @@
-import com.wlf.core.dao.StudentDao;
-import com.wlf.core.dao.impl.StudentDaoImpl;
+import com.wlf.ext.dao.StudentDao;
+import com.wlf.ext.dao.impl.StudentDaoImpl;
 import com.wlf.core.domain.dto.Result;
 
 /**

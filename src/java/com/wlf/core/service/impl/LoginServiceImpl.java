@@ -5,7 +5,7 @@ import com.wlf.core.dao.LoginDao;
 import com.wlf.core.dao.impl.LoginDaoImpl;
 import com.wlf.core.domain.base.Account;
 import com.wlf.core.domain.base.dto.UserData;
-import com.wlf.core.service.LoginServer;
+import com.wlf.core.service.LoginService;
 import com.wlf.core.domain.dto.Result;
 
 /**
@@ -13,7 +13,7 @@ import com.wlf.core.domain.dto.Result;
  * @version 1.0
  * @date 2021-04-27 15:42
  */
-public class LoginServerImpl implements LoginServer {
+public class LoginServiceImpl implements LoginService {
     private final LoginDao loginDao =new LoginDaoImpl();
     @Override
     public Result login(Account account) {

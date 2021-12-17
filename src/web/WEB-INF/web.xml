@@ -30,14 +30,14 @@
     <!--全局异常页面-->
     <error-page>
         <error-code>500</error-code>
-        <location>/src/web/WEB-INF/pages/error/500.html</location>
+        <location>/src/web/WEB-INF/pages/base/error/500.html</location>
     </error-page>
     <error-page>
         <error-code>404</error-code>
-        <location>/src/web/WEB-INF/pages/error/404.html</location>
+        <location>/src/web/WEB-INF/pages/base/error/404.html</location>
     </error-page>
     <error-page>
         <error-code>403</error-code>
-        <location>/src/web/WEB-INF/pages/error/403.html</location>
+        <location>/src/web/WEB-INF/pages/base/error/403.html</location>
     </error-page>
 </web-app>

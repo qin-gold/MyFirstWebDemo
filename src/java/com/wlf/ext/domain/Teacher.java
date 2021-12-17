@@ -1,4 +1,4 @@
-package com.wlf.core.domain;
+package com.wlf.ext.domain;
 
 import lombok.Data;
 

@@ -1,7 +1,7 @@
-package com.wlf.core.dao.impl;
+package com.wlf.ext.dao.impl;
 
-import com.wlf.core.dao.StudentDao;
-import com.wlf.core.domain.Student;
+import com.wlf.ext.dao.StudentDao;
+import com.wlf.ext.domain.Student;
 import com.wlf.core.enums.CodeEnum;
 import com.wlf.core.enums.MsgCode;
 import com.wlf.core.utlis.JDBCUtils;

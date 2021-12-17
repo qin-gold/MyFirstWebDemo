@@ -1,13 +1,13 @@
-package com.wlf.core.service.impl;
+package com.wlf.ext.service.impl;
 
-import com.wlf.core.dao.StudentDao;
-import com.wlf.core.dao.impl.StudentDaoImpl;
-import com.wlf.core.domain.Student;
+import com.wlf.ext.dao.StudentDao;
+import com.wlf.ext.dao.impl.StudentDaoImpl;
+import com.wlf.ext.domain.Student;
 import com.wlf.core.domain.dto.QueryConditions;
-import com.wlf.core.service.StudentServer;
+import com.wlf.ext.service.StudentService;
 import com.wlf.core.domain.dto.Result;
 
-public class StudentServerImpl implements StudentServer {
+public class StudentServiceImpl implements StudentService {
     private final StudentDao studentDao = new StudentDaoImpl();
 
     @Override

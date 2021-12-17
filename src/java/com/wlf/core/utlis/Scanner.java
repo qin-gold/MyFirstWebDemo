@@ -26,7 +26,6 @@ public class Scanner {
      * 初始化使用的Map集合
      */
     private static final Properties load;
-    private static final Map<String,Class<?>> map = new ConcurrentHashMap<>();
 
     static {
         load = PropertiesLoadUtils.load("config.properties");
@@ -42,7 +41,6 @@ public class Scanner {
     public static void init(String packageName, Class<? extends Annotation> ano) {
         Reflections reflection = new Reflections(packageName);
         if (ano.equals(Table.class)) initDb(reflection);
-        if (ano.equals(Controller.class)) initController(reflection);
         if (ano.equals(Log.class)) scannerLog(reflection);
 //        throw new RuntimeException("未找到对应的注解");
     }
@@ -66,17 +64,7 @@ public class Scanner {
         }
     }
 
-    private static void initController(Reflections reflections) {
-        Set<Class<?>> classes = reflections.getTypesAnnotatedWith(Controller.class);
-        classes.forEach(item->{
-            map.put(item.getAnnotation(Controller.class).value(),item);
-        });
-    }
-
     private static void scannerLog(Reflections reflections) {
     }
 
-    public static Map<String,Class<?>> getClasses() {
-        return map;
-    }
 }

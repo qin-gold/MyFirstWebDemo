@@ -1,6 +1,6 @@
-package com.wlf.core.dao;
+package com.wlf.ext.dao;
 
-import com.wlf.core.domain.Student;
+import com.wlf.ext.domain.Student;
 import com.wlf.core.domain.dto.Result;
 
 import java.io.IOException;

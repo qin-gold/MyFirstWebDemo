@@ -2,7 +2,7 @@ package com.wlf.core.dao.impl;
 
 import com.wlf.core.dao.LoginDao;
 import com.wlf.core.domain.base.Account;
-import com.wlf.core.domain.LoginStatus;
+import com.wlf.core.domain.base.LoginStatus;
 import com.wlf.core.enums.CodeEnum;
 import com.wlf.core.enums.MsgCode;
 import com.wlf.core.utlis.JDBCUtils;
@@ -103,10 +103,9 @@ public class LoginDaoImpl implements LoginDao {
 
     @Override
     public void insertLog(LoginStatus loginStatus) {
-        String sql = "select * from b_login_status where accountName =? and status = 2";
-        JDBCUtils.update( sql, loginStatus.getId(), loginStatus.getAccountName(), loginStatus.getUserId(),
-                loginStatus.getLoginTime(), loginStatus.getLoginResult(), loginStatus.getIp());
+
     }
+
 
     @Override
     public void delLoginLog(String id) {

@@ -1,6 +1,6 @@
-package com.wlf.core.dao.impl;
+package com.wlf.ext.dao.impl;
 
-import com.wlf.core.dao.TeacherDao;
+import com.wlf.ext.dao.TeacherDao;
 
 /**
  * 老师管理实体类

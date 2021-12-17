@@ -1,4 +1,4 @@
-package com.wlf.core.dao;
+package com.wlf.ext.dao;
 
 /**
  * 老师管理接口

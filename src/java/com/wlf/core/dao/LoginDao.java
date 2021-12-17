@@ -1,7 +1,7 @@
 package com.wlf.core.dao;
 
 import com.wlf.core.domain.base.Account;
-import com.wlf.core.domain.LoginStatus;
+import com.wlf.core.domain.base.LoginStatus;
 import com.wlf.core.domain.dto.Result;
 
 

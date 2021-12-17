@@ -11,7 +11,7 @@ import com.wlf.core.domain.dto.Result;
  * @version 1.0
  * @date 2021-04-27 15:42
  */
-public interface LoginServer {
+public interface LoginService {
     /**
      * 用户登录的方法
      *

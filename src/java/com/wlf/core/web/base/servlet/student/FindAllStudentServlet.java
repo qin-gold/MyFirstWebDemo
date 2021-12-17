@@ -2,8 +2,8 @@ package com.wlf.core.web.base.servlet.student;
 
 import com.wlf.core.domain.dto.QueryConditions;
 import com.wlf.core.domain.dto.Result;
-import com.wlf.core.service.StudentServer;
-import com.wlf.core.service.impl.StudentServerImpl;
+import com.wlf.ext.service.StudentService;
+import com.wlf.ext.service.impl.StudentServiceImpl;
 import com.wlf.core.utlis.Inject;
 import com.wlf.core.web.base.servlet.BaseServlet;
 
@@ -19,7 +19,7 @@ import java.io.IOException;
  */
 public class FindAllStudentServlet extends BaseServlet {
 
-    private final StudentServer server = new StudentServerImpl();
+    private final StudentService server = new StudentServiceImpl();
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

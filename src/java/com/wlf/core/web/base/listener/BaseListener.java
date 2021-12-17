@@ -11,11 +11,12 @@ import javax.servlet.http.HttpSessionListener;
 
 /**
  * 基础Listener 继承了一个简易AOP
+ *
  * @author QinShijiao
  * @version 1.0
  * @createTime 2021/10/9 1:48
  */
-public class BaseListener extends SimpleAspect implements ServletContextListener , HttpSessionListener, ServletRequestListener {
+public class BaseListener extends SimpleAspect implements ServletContextListener, HttpSessionListener, ServletRequestListener {
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
 

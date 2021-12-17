@@ -1,8 +1,8 @@
 package com.wlf.core.dao.base.impl;
 
 import com.wlf.core.dao.base.AccountDao;
-import com.wlf.core.domain.LoginStatus;
 import com.wlf.core.domain.base.Account;
+import com.wlf.core.domain.base.LoginStatus;
 import com.wlf.core.domain.dto.Result;
 import com.wlf.core.domain.dto.ReturnMsg;
 import com.wlf.core.enums.CodeEnum;
@@ -105,15 +105,15 @@ public class AccountDaoImpl implements AccountDao {
 
     @Override
     public void insertLog(LoginStatus loginStatus) {
-        String sql = "select * from b_login_status where accountName =? and status = 2";
-        JDBCUtils.update( sql, loginStatus.getId(), loginStatus.getAccountName(), loginStatus.getUserId(),
-                loginStatus.getLoginTime(), loginStatus.getLoginResult(), loginStatus.getIp());
+        String sql = "insert into b_login_status(id,userId,username,realIp,token,loginErrCount,loginTime,remark)values(?,?,?,?,?,?,?,?)";
+        JDBCUtils.update( sql, loginStatus.getId(), loginStatus.getUserId(),loginStatus.getUsername(),loginStatus.getRealIp(),loginStatus.getToken(),
+               loginStatus.getLoginErrCount(),loginStatus.getLoginTime(),loginStatus.getRemark());
     }
 
     @Override
     public void delLoginLog(String id) {
-        String sql = "delete from b_login_status where accountId = ";
-        JDBCUtils.update( sql);
+        String sql = "delete from b_login_status where accountId = ?";
+        JDBCUtils.update( sql,id);
     }
 
     @Override

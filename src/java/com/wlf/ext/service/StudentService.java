@@ -1,10 +1,10 @@
-package com.wlf.core.service;
+package com.wlf.ext.service;
 
-import com.wlf.core.domain.Student;
+import com.wlf.ext.domain.Student;
 import com.wlf.core.domain.dto.QueryConditions;
 import com.wlf.core.domain.dto.Result;
 
-public interface StudentServer {
+public interface StudentService {
     /**
      * 根据用户id查询数据
      *

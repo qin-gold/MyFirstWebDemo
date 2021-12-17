@@ -73,7 +73,7 @@ public class DispatchServlet extends HttpServlet {
         if (handlerMapping.paramIndexMapping.containsKey(HttpServletResponse.class.getName()))
             paramValues[handlerMapping.paramIndexMapping.get(HttpServletResponse.class.getName())] = resp;
         if (handlerMapping.paramIndexMapping.containsKey(Model.class.getName()))
-            paramValues[handlerMapping.paramIndexMapping.get(Model.class.getName())] = new Model(req,resp);
+            paramValues[handlerMapping.paramIndexMapping.get(Model.class.getName())] = new Model(req, resp);
 
         handlerMapping.method.invoke(handlerMapping.controller, paramValues);
     }
@@ -138,17 +138,17 @@ public class DispatchServlet extends HttpServlet {
             }
             //默认获取所有的public方法
             for (Method method : clazz.getMethods()) {
-                if (method.isAnnotationPresent(RequestMapping.class)){
+                if (method.isAnnotationPresent(RequestMapping.class)) {
                     StringBuilder builder = new StringBuilder();
                     RequestMapping mapping = method.getAnnotation(RequestMapping.class);
                     mappingAdd(entry, baseUrl, method, builder, mapping.value());
                 }
-                if (method.isAnnotationPresent(GetMapping.class)){
+                if (method.isAnnotationPresent(GetMapping.class)) {
                     StringBuilder builder = new StringBuilder();
                     GetMapping mapping = method.getAnnotation(GetMapping.class);
                     mappingAdd(entry, baseUrl, method, builder, mapping.value());
                 }
-                if (method.isAnnotationPresent(PostMapping.class)){
+                if (method.isAnnotationPresent(PostMapping.class)) {
                     PostMapping mapping = method.getAnnotation(PostMapping.class);
                     StringBuilder builder = new StringBuilder();
                     mappingAdd(entry, baseUrl, method, builder, mapping.value());
@@ -159,9 +159,9 @@ public class DispatchServlet extends HttpServlet {
 
     private void mappingAdd(Map.Entry<String, Object> entry, String baseUrl, Method method, StringBuilder builder, String value) {
         boolean equals = "".equals(value);
-        builder.append(baseUrl).append(equals?"/"+method.getName(): value.replaceAll("/+", "/"));
+        builder.append(baseUrl).append(equals ? "/" + method.getName() : value.replaceAll("/+", "/"));
         this.handlerMapping.add(new HandlerMapping(builder.toString(), entry.getValue(), method));
-        System.out.println("Mapped :" + builder + "," + method);
+        log.info("Mapped :{},{}", builder, method);
     }
 
     private void doAutowired() {
@@ -242,12 +242,16 @@ public class DispatchServlet extends HttpServlet {
     private void doScanner(String scanPackage) {
         //scanPackage = com.wlf.web
         //需要把包路径转换为文件路径 classpath 路径
-//        Scanner.init(scanPackage,);
-        URL url = this.getClass().getClassLoader().getResource( scanPackage.replaceAll("\\.", "/"));
+        addClass("com.wlf.core.web");
+        addClass(scanPackage);
+    }
+
+    private void addClass(String scanPackage) {
+        URL url = this.getClass().getClassLoader().getResource(scanPackage.replaceAll("\\.", "/"));
         File classPath = new File(Objects.requireNonNull(url).getFile());
         for (File file : Objects.requireNonNull(classPath.listFiles())) {
             //如果是文件夹，就还需要往下循环一层一层的找
-            if (file.isDirectory()) doScanner(scanPackage + "." + file.getName());
+            if (file.isDirectory()) addClass(scanPackage + "." + file.getName());
             else {
                 //只扫描class文件
                 if (!file.getName().endsWith(".class")) continue;
@@ -300,7 +304,7 @@ public class DispatchServlet extends HttpServlet {
             Annotation[][] pa = method.getParameterAnnotations();
             for (int i = 0; i < paramTypes.length; i++) {
                 Class<?> type = paramTypes[i];
-                if (type == HttpServletRequest.class || type == HttpServletResponse.class ||type == Model.class) {
+                if (type == HttpServletRequest.class || type == HttpServletResponse.class || type == Model.class) {
                     paramIndexMapping.put(type.getName(), i);
                     continue;
                 }
