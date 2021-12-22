@@ -1,5 +1,6 @@
 package com.wlf.core.web.base.core;
 
+import com.wlf.core.enums.HttpRequestEnum;
 import com.wlf.core.web.base.annotation.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.DefaultParameterNameDiscoverer;
@@ -54,6 +55,15 @@ public class DispatchServlet extends HttpServlet {
         }
     }
 
+    @Override
+    protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        try {
+            doDispatch(req, resp);
+        } catch (Exception e) {
+            e.printStackTrace();
+            resp.getWriter().write("500 Exception , Detail:" + Arrays.toString(e.getStackTrace()));
+        }
+    }
 
     private void doDispatch(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         HandlerMapping handlerMapping = getHandle(req);
@@ -83,7 +93,10 @@ public class DispatchServlet extends HttpServlet {
         // 绝对路径->处理成相对路径
         String url = req.getRequestURI().replaceAll(req.getContextPath(), "").replaceAll("/+", "/");
         for (HandlerMapping mapping : this.handlerMapping) {
-            if (mapping.getUrl().equals(url)) return mapping;
+            if (mapping.getHttpRequestEnum().equals(HttpRequestEnum.OTHER) && mapping.getUrl().equals(url))
+                return mapping;
+            if (mapping.getUrl().equals(url) && mapping.getHttpRequestEnum().getStatusValue().equalsIgnoreCase(req.getMethod()))
+                return mapping;
         }
         return null;
     }
@@ -141,26 +154,36 @@ public class DispatchServlet extends HttpServlet {
                 if (method.isAnnotationPresent(RequestMapping.class)) {
                     StringBuilder builder = new StringBuilder();
                     RequestMapping mapping = method.getAnnotation(RequestMapping.class);
-                    mappingAdd(entry, baseUrl, method, builder, mapping.value());
+                    mappingAdd(entry, baseUrl, method, builder, mapping.value(), HttpRequestEnum.OTHER);
                 }
                 if (method.isAnnotationPresent(GetMapping.class)) {
                     StringBuilder builder = new StringBuilder();
                     GetMapping mapping = method.getAnnotation(GetMapping.class);
-                    mappingAdd(entry, baseUrl, method, builder, mapping.value());
+                    mappingAdd(entry, baseUrl, method, builder, mapping.value(), HttpRequestEnum.GET);
                 }
                 if (method.isAnnotationPresent(PostMapping.class)) {
                     PostMapping mapping = method.getAnnotation(PostMapping.class);
                     StringBuilder builder = new StringBuilder();
-                    mappingAdd(entry, baseUrl, method, builder, mapping.value());
+                    mappingAdd(entry, baseUrl, method, builder, mapping.value(), HttpRequestEnum.POST);
+                }
+                if (method.isAnnotationPresent(DeleteMapping.class)) {
+                    DeleteMapping mapping = method.getAnnotation(DeleteMapping.class);
+                    StringBuilder builder = new StringBuilder();
+                    mappingAdd(entry, baseUrl, method, builder, mapping.value(), HttpRequestEnum.DELETE);
+                }
+                if (method.isAnnotationPresent(PutMapping.class)) {
+                    PutMapping mapping = method.getAnnotation(PutMapping.class);
+                    StringBuilder builder = new StringBuilder();
+                    mappingAdd(entry, baseUrl, method, builder, mapping.value(), HttpRequestEnum.PUT);
                 }
             }
         }
     }
 
-    private void mappingAdd(Map.Entry<String, Object> entry, String baseUrl, Method method, StringBuilder builder, String value) {
+    private void mappingAdd(Map.Entry<String, Object> entry, String baseUrl, Method method, StringBuilder builder, String value, HttpRequestEnum requestEnum) {
         boolean equals = "".equals(value);
         builder.append(baseUrl).append(equals ? "/" + method.getName() : value.replaceAll("/+", "/"));
-        this.handlerMapping.add(new HandlerMapping(builder.toString(), entry.getValue(), method));
+        this.handlerMapping.add(new HandlerMapping(builder.toString(), entry.getValue(), method, requestEnum));
         log.info("Mapped :{},{}", builder, method);
     }
 
@@ -191,7 +214,6 @@ public class DispatchServlet extends HttpServlet {
             }
         }
     }
-
 
     private void doInstance() {
         //初始化，为DI做准备
@@ -231,12 +253,10 @@ public class DispatchServlet extends HttpServlet {
         }
     }
 
-
     //转换首字母小写
     private String toLowerFirstCase(String beanName) {
         return beanName.replaceFirst("^.", String.valueOf(beanName.charAt(0)).toLowerCase());
     }
-
 
     //扫描出相关的类
     private void doScanner(String scanPackage) {
@@ -270,16 +290,14 @@ public class DispatchServlet extends HttpServlet {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
     }
-
 
     //保存一个url和一个Method的关系
     static class HandlerMapping {
         //请求url
         private final String url;
         // url对应的method
+        private final HttpRequestEnum httpRequestEnum;
         private final Method method;
         private final Object controller;
         //形参列表 参数的名字作为key，参数的顺序位置作为值
@@ -287,10 +305,11 @@ public class DispatchServlet extends HttpServlet {
         private final Class<?>[] paramTypes;
 
 
-        public HandlerMapping(String url, Object controller, Method method) {
+        public HandlerMapping(String url, Object controller, Method method, HttpRequestEnum httpRequestEnum) {
             this.url = url;
             this.method = method;
             this.controller = controller;
+            this.httpRequestEnum = httpRequestEnum;
             paramIndexMapping = new HashMap<>();
             paramTypes = method.getParameterTypes();
             putParamIndexMapping(method);
@@ -338,6 +357,10 @@ public class DispatchServlet extends HttpServlet {
 
         public Class<?>[] getParamTypes() {
             return paramTypes;
+        }
+
+        public HttpRequestEnum getHttpRequestEnum() {
+            return httpRequestEnum;
         }
     }
 }

@@ -12,7 +12,8 @@ public enum HttpRequestEnum {
     PUT("Put"),
     DELETE("Delete"),
     HEAD("Head"),
-    OPTIONS("Options");
+    OPTIONS("Options"),
+    OTHER("Other");
 
     // 状态值
     private final String statusValue;
