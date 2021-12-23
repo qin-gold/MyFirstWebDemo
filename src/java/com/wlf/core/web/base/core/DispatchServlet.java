@@ -260,7 +260,7 @@ public class DispatchServlet extends HttpServlet {
 
     //扫描出相关的类
     private void doScanner(String scanPackage) {
-        //scanPackage = com.wlf.web
+        //scanPackage = com.wlf.core.web
         //需要把包路径转换为文件路径 classpath 路径
         addClass("com.wlf.core.web");
         addClass(scanPackage);
@@ -284,7 +284,7 @@ public class DispatchServlet extends HttpServlet {
     //加载配置文件
     private void doLoadConfig(String contextConfigLocation) {
         //直接从类路径下找到Spring主配置文件所在的路径，并且将其读取出来放到Properties对象中
-        //相当于把scanPackage=com.jarvisy.demo.mvc 从文件中保存到了内存中。
+        //相当于把scanPackage=com.wlf.core 从文件中保存到了内存中。
         try (InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(contextConfigLocation)) {
             contextConfig.load(inputStream);
         } catch (IOException e) {
