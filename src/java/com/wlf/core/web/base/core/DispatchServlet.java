@@ -1,12 +1,15 @@
 package com.wlf.core.web.base.core;
 
+import cn.hutool.core.io.file.FileReader;
 import com.wlf.core.enums.HttpRequestEnum;
+import com.wlf.core.utlis.EqualsUtils;
 import com.wlf.core.web.base.annotation.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.DefaultParameterNameDiscoverer;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,6 +20,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -27,6 +31,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 @Slf4j
 public class DispatchServlet extends HttpServlet {
+    private static final String FILE_PATH = "/web";
     //保存application.properties配置文件中的内容
     private final Properties contextConfig = new Properties();
     //保存扫描的所有的类名
@@ -40,29 +45,38 @@ public class DispatchServlet extends HttpServlet {
     private final List<HandlerMapping> handlerMapping = new ArrayList<>();
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        this.doPost(req, resp);
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        //6、调用，运行阶段
-        try {
-            doDispatch(req, resp);
-        } catch (Exception e) {
-            e.printStackTrace();
-            resp.getWriter().write("500 Exception , Detail:" + Arrays.toString(e.getStackTrace()));
-        }
-    }
-
-    @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
-            doDispatch(req, resp);
+            boolean isFil = EqualsUtils.equalsAll(req.getRequestURI());
+            if (!isFil) {
+                doDispatch(req, resp);
+            } else {
+                doFile(req, resp);
+            }
         } catch (Exception e) {
             e.printStackTrace();
             resp.getWriter().write("500 Exception , Detail:" + Arrays.toString(e.getStackTrace()));
         }
+    }
+
+    private void doFile(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        ServletOutputStream writer = resp.getOutputStream();
+        String webPath = contextConfig.getProperty("staticPath");
+        String filePath = "".equals(webPath) ? FILE_PATH : webPath.replaceAll("\\.", "/");
+        String abPath = System.getProperty("user.dir");
+        FileReader reader = null;
+        try {
+            reader = new FileReader(abPath + "/src" + filePath + req.getRequestURI());
+        } catch (Exception e) {
+            writer.write("404 File Not Find".getBytes(StandardCharsets.UTF_8));
+            writer.flush();
+            writer.close();
+            return;
+        }
+        byte[] readBytes = reader.readBytes();
+        writer.write(readBytes);
+        writer.flush();
+        writer.close();
     }
 
     private void doDispatch(HttpServletRequest req, HttpServletResponse resp) throws Exception {

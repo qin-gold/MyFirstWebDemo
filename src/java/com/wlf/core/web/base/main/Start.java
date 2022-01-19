@@ -1,7 +1,9 @@
 package com.wlf.core.web.base.main;
 
+import com.wlf.core.web.base.plugin.JspExt;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.jetty.annotations.AnnotationConfiguration;
+import org.eclipse.jetty.jsp.JettyJspServlet;
 import org.eclipse.jetty.plus.webapp.EnvConfiguration;
 import org.eclipse.jetty.plus.webapp.PlusConfiguration;
 import org.eclipse.jetty.server.Server;
@@ -41,6 +43,11 @@ public class Start implements StartConfig {
         webAppContext.setConfigurationDiscovered(true);
         webAppContext.setContextPath(context);
         webAppContext.setResourceBase(viewPath);
+//        webAppContext.addBean(new JspExt(webAppContext));
+//        webAppContext.addServlet(JettyJspServlet.class,"*.jsp");
+//        webAppContext.setAttribute(
+//                "org.eclipse.jetty.server.webapp.ContainerIncludeJarPattern",
+//                ".*/[^/]*servlet-api-[^/]*\\.jar$|.*/javax.servlet.jsp.jstl-.*\\.jar$|.*/[^/]*taglibs.*\\.jar$" );
         webAppContext.setConfigurations(new Configuration[]{
                 new AnnotationConfiguration(),
                 new WebInfConfiguration(),

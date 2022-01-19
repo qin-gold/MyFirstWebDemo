@@ -19,7 +19,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Log(title = "用户登录", remark = "用户登录")
-//@Servlet(mapping = "/login")
 @WebServlet("/login")
 public class LoginAccountServlet extends BaseServlet {
 
